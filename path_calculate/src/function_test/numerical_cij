@@ -1,0 +1,51 @@
+gradient::grad gradient::gd_cij(float heading,float distancex, float distancey){
+
+struct grad cij;
+
+
+double cos_ij;
+double dd1_x,dd1_y, gd_x,gd_y;
+double H_cost,ddcos_xij,ddcos_yij;
+float cos_heading = cos(heading), sin_heading = sin(heading), cos_a = cos(blind_a) ;
+
+cos_ij = -sin_heading*distancex+cos_heading*distancey;
+cos_ij /= std::sqrt((sin_heading*sin_heading+cos_heading*cos_heading)*(distancex*distancex+distancey*distancey));
+
+
+//printf("heading = %f \n", heading);
+//printf("cos_ij=%3.2f theat_ij=%3.2f\n",cos_ij,acos(cos_ij));
+
+if(cos_ij>bound)
+{
+dd1_x = distancex + 0.0000001;
+dd1_y = distancey + 0.0000001;
+
+ddcos_xij = -sin_heading*dd1_x+cos_heading*distancey;
+ddcos_xij /= std::sqrt((cos_heading*cos_heading+sin_heading*sin_heading)*(dd1_x*dd1_x+distancey*distancey));
+
+ddcos_yij = -sin_heading*distancex+cos_heading*dd1_y;
+ddcos_yij /= std::sqrt((cos_heading*cos_heading+sin_heading*sin_heading)*(distancex*distancex+dd1_y*dd1_y));
+
+
+H_cost = (bound-cos_ij)/((cos_a-cos_ij)*(cos_a-cos_ij)*(cos_a-cos_ij));
+gd_x = (bound-ddcos_xij)/((cos_a-ddcos_xij)*(cos_a-ddcos_xij)*(cos_a-ddcos_xij));
+gd_y = (bound-ddcos_yij)/((cos_a-ddcos_yij)*(cos_a-ddcos_yij)*(cos_a-ddcos_yij));
+
+
+//H_cost = (bound-cos_ij)/((cos_a-cos_ij));
+//gd_x = (bound-ddcos_xij)/((cos_a-ddcos_xij));
+//gd_y = (bound-ddcos_yij)/((cos_a-ddcos_yij));
+
+cij.gx = (H_cost-gd_x)/0.0000001;
+cij.gy = (H_cost-gd_y)/0.0000001;
+}
+
+// should also have the if(){} for cosij>cos(blind_a)
+else{
+cij.gx = 0;
+cij.gy = 0;
+}
+
+return cij;
+
+}
