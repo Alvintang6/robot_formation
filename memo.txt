@@ -1,0 +1,8 @@
+16/11
+
+1.change the heading msgs subscribe topic from odom to imu 
+2.modify the weight for kcij =0.1 & kvij=0.3
+3.set a threshold for total.gradient
+
+
+

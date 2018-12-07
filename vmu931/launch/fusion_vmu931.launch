@@ -1,0 +1,10 @@
+<launch>
+
+<node pkg="vmu931" name = "vmu931" type ="vmu931_node" output="screen" >
+<param name="/port" type="str" value="/dev/ttyACM0"/>
+</node>
+
+ <node pkg="imu_complementary_filter" type="complementary_filter_node" name="imu_complementary_filter" respawn="false" >
+  </node>
+
+</launch>

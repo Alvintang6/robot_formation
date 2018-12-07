@@ -1,0 +1,9 @@
+<launch>
+
+<node pkg="vmu931" name = "vmu931" type ="vmu931_node" output="screen" >
+
+<param name="/port" type="str" value="/dev/ttyACM0"/>
+</node>
+
+
+</launch>

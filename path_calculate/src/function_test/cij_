@@ -1,0 +1,6 @@
+d_rijx=(sin(heading)/((cos(heading)^2 + sin(heading)^2)*(disx^2 + disy^2))^(1/2) + (disx*(disy*cos(heading) - disx*sin(heading))*(cos(heading)^2 + sin(heading)^2))/((cos(heading)^2 + sin(heading)^2)*(disx^2 + disy^2))^(3/2))/(1 - (disy*cos(heading) - disx*sin(heading))^2/((cos(heading)^2 + sin(heading)^2)*(disx^2 + disy^2)))^(1/2);
+
+
+
+
+d_rijy=-(cos(heading)/((cos(heading)^2 + sin(heading)^2)*(disx^2 + disy^2))^(1/2) - (disy*(disy*cos(heading) - disx*sin(heading))*(cos(heading)^2 + sin(heading)^2))/((cos(heading)^2 + sin(heading)^2)*(disx^2 + disy^2))^(3/2))/(1 - (disy*cos(heading) - disx*sin(heading))^2/((cos(heading)^2 + sin(heading)^2)*(disx^2 + disy^2)))^(1/2);
