@@ -11,6 +11,7 @@ int main(int argc, char **argv) {
 
        float desired_v0,desired_h,motor_lim;  //where desired_h is offset value and should in radain uint
        float kvij,kcij,threshold;
+	bool test=0;
 
 	ros::init(argc, argv, "cam_pub");
 	Ctrl_bot obj; 
@@ -20,6 +21,7 @@ int main(int argc, char **argv) {
 	ros::param::get("~/k_vij",kvij);          // weight for cost function
 	ros::param::get("~/k_cij",kcij);          // weight for cost function
 	ros::param::get("~/threshold_grd",threshold); // threshlod for the gradient
+	ros::param::get("~/single_test", test);
 
 	obj.designed={-0.8,0.3,-1.6,0};	// robot1,robot2 position
  	ros::Rate rate(20);
@@ -28,18 +30,18 @@ int main(int argc, char **argv) {
  while(ros::ok()){
 
 
-//if(obj.pc_ctrl==1){
-    geometry_msgs::Twist msg;    
-    obj.total= obj.total_gradient(obj.designed,kvij,kcij,threshold);
-    obj.cmd = obj.vel_calculate(obj.total,motor_lim,desired_v0 ,desired_h); // (0,0)
+  if(obj.pc_ctrl==1 || test==true){
+     geometry_msgs::Twist msg;    
+     obj.total= obj.total_gradient(obj.designed,kvij,kcij,threshold);
+     obj.cmd = obj.vel_calculate(obj.total,motor_lim,desired_v0 ,desired_h); // (0,0)
 
-    msg.linear.x = obj.cmd.linear; msg.angular.z=obj.cmd.angular;
-   printf("obj.cmd.linear= %f \n \n",obj.cmd.linear);
+     msg.linear.x = obj.cmd.linear; msg.angular.z=obj.cmd.angular;
+     printf("obj.cmd.linear= %f \n \n",obj.cmd.linear);
 
-    obj.pub.publish(msg);   
- // }
-rate.sleep();
-ros::spinOnce();
+     obj.pub.publish(msg);   
+   }
+ rate.sleep();
+ ros::spinOnce();
 
 }
 

@@ -1,7 +1,7 @@
 <launch>
    <include file="$(find robot_vision)/launch/dul_usb_cam.launch"/>
 
-   <include file="$(find rikirobot)/launch/bringup.launch">
+   <include file="$(find base_com)/launch/bringup.launch"/>
 
 
    <param name="/robot1_ip" type="str" value="" />
@@ -13,15 +13,23 @@
    
    <node pkg="path_calculate" name = "udp_send" type ="udp_client" />
    
+   <node pkg="vmu931" name = "vmu931" type ="vmu931_node" output="screen" >
 
+   <param name="/port" type="str" value="/dev/ttyACM0"/>
+   </node>
   
 
    <node pkg="path_calculate" name = "cmd_pub" type ="path_opt" output="screen" >
-   <param name="/desired_h" type="double" value="0.5"/>     <!-->UNIT FOR heading rad, volecity m/s  <-->
+   <param name="/desired_h" type="double" value="0.5"/>     
+
+<!-->UNIT FOR heading rad, volecity m/s  <-->
+
+
    <param name="/desired_v0" type="double" value="0"/>     
    <param name="/motor_lim" type="double" value="0.5"/>
    <param name="/k_vij" type="double" value="0.2"/>
    <param name="/k_cij" type="double" value="0.2"/>
+   <param name="/single_test" type="bool" value="true"/>
    </node>
 
 

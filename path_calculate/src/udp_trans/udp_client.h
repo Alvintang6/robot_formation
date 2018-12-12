@@ -30,7 +30,7 @@ public:
 	ros::Publisher headings;
 	
 	Udp_com(){
-	self_heading = nh.subscribe("/odom",1000, &Udp_com::imu_CB, this );
+	self_heading = nh.subscribe("/imu/data",1000, &Udp_com::imu_CB, this );
 	}
 
 	

@@ -2,7 +2,7 @@
 
    <param name="/robot1_ip" type="str" value="" />
    <param name="/robot2_ip" type="str" value="" />
-   <param name="/robot3_ip" type="str" value="192.168.1.146" />
+   <param name="/robot3_ip" type="str" value="192.168.1.134" />
    <param name="/laptop_ip" type="str" value="192.168.1.128" />
 
    <node pkg="path_calculate" name = "udp_recv" type ="udp_server" />
