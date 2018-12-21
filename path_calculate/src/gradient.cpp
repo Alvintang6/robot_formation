@@ -9,10 +9,10 @@
 
 
 
-void gradient::l2g_rotation(float & x, float & y, float heading_self){
+void gradient::l2g_rotation(const float &x,const float & y, float heading_self, float &rt_x,float &rt_y){
 
-	x = x*cos(heading_self)-y*sin(heading_self);
-	y = sin(heading_self)*x+cos(heading_self)*y;	
+	rt_x = x*cos(heading_self)-y*sin(heading_self);
+	rt_y = sin(heading_self)*x+cos(heading_self)*y;	
 
 
 }
@@ -162,14 +162,16 @@ printf("robot1.find_left = %d , robot1.find_right= %d \n",robot1.find_left,robot
 
 if((robot1.find_left == 1) ||(robot1.find_right == 1) )
 {	
+	float temp1_x,temp1_y;
 
-
-	l2g_rotation(robot1.distancex,robot1.distancey, head_self); // for the rotation the posion of the robot from local to global
+ std::cout<<"robot1.markerID"<<robot1.info_marker<<"robot1.x"<<robot1.distancex<<"robot1.y"<<robot1.distancey<<std::endl;
+	l2g_rotation(robot1.distancex,robot1.distancey, head_self,temp1_x,temp1_y); // for the rotation the posion of the robot from local to global
+	std::cout<<"heading_rotate"<<57.2974*head_self<<"robot1.x"<<temp1_x<<"robot1.y"<<temp1_y<<std::endl;
 	grad vij_1={};grad cij_1={};
 	float norm1_R,norm1_D;
 
 	// the variable for norm_R calculateed by robot(defined in class)
-	norm1_R = robot1.distancex*robot1.distancex+robot1.distancey*robot1.distancey;
+	norm1_R = temp1_x*temp1_x+temp1_y*temp1_y;
 	// the variable defined inside the function	
 	norm1_D = designed.desire_1x*designed.desire_1x+designed.desire_1y*designed.desire_1y;
 	
@@ -179,17 +181,17 @@ if((robot1.find_left == 1) ||(robot1.find_right == 1) )
 	
 	if(norm1_R<norm1_D)
 	{
-	vij_1=gd_vijless(designed.desire_1x,designed.desire_1y,robot1.distancex,robot1.distancey);
+	vij_1=gd_vijless(designed.desire_1x,designed.desire_1y,temp1_x,temp1_y);
 	// cij should be modify
-	cij_1=gd_cij(robot1.heading,robot1.distancex,robot1.distancey);
+	cij_1=gd_cij(robot1.heading,temp1_x,temp1_y);
 	
 	//std::cout<<"vij_1(x) outside"<<vij_1.gx<<vij_1.gy<<std::endl;
 	//std::cout<<"using vijless"<<std::endl;
 	}
 	
 	else{
-	vij_1=gd_vijmore(designed.desire_1x, designed.desire_1y,robot1.distancex,robot1.distancey, RS);
-	cij_1 = gd_cij(robot1.heading,robot1.distancex,robot1.distancey);
+	vij_1=gd_vijmore(designed.desire_1x, designed.desire_1y,temp1_x,temp1_y, RS);
+	cij_1 = gd_cij(robot1.heading,temp1_x,temp1_y);
 	//std::cout<<"using vijMORE"<<std::endl;	
 
 	}
@@ -207,25 +209,26 @@ std::cout<<"vij_1(Y)="<<vij_1.gy<<std::endl;
 
 if((robot2.find_left == 1) || (robot2.find_right == 1))
 {	
-
-	l2g_rotation(robot2.distancex,robot2.distancey, head_self);
+	float temp2_x,temp2_y;
+	l2g_rotation(robot2.distancex,robot2.distancey, head_self,temp2_x,temp2_y);
+   
 	  // for the rotation the posion of the robot from local to global
 	grad vij_2={};grad cij_2={};
 	float norm2_R,norm2_D;
 	// the variable for norm_R calculateed by robot(defined in class)
-	norm2_R = robot2.distancex*robot2.distancex+robot2.distancey*robot2.distancey;
+	norm2_R = temp2_x*temp2_x+temp2_y*temp2_y;
 	// the variable defined inside the function	
 	norm2_D = designed.desire_2x*designed.desire_2x+designed.desire_2y*designed.desire_2y;
 
 	if(norm2_R<norm2_D){
-	vij_2=gd_vijless(designed.desire_2x,designed.desire_2y,robot2.distancex,robot2.distancey);
-	cij_2=gd_cij(robot2.heading,robot2.distancex,robot2.distancey);
+	vij_2=gd_vijless(designed.desire_2x,designed.desire_2y,temp2_x,temp2_y);
+	cij_2=gd_cij(robot2.heading,temp2_x,temp2_y);
 	
 	}
 
 	else{
-	vij_2=gd_vijmore(designed.desire_2x,designed.desire_2y,robot2.distancex,robot2.distancey,RS);
-	cij_2=gd_cij(robot2.heading,robot2.distancex,robot2.distancey);
+	vij_2=gd_vijmore(designed.desire_2x,designed.desire_2y,temp2_x,temp2_y,RS);
+	cij_2=gd_cij(robot2.heading,temp2_x,temp2_y);
 	std::cout<<"vij_22(x)="<<vij_2.gx<<std::endl;
 	}
 

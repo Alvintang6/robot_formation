@@ -17,8 +17,8 @@ class Poseback{
 
 	Poseback(){
 
-	sub_left_pose = nh.subscribe("/camera1/ar_pose_marker", 1000, &Poseback::pose_getleftCB,this);
-	sub_right_pose = nh.subscribe("/camera2/ar_pose_marker", 1000, &Poseback::pose_getrightCB,this);
+	sub_left_pose = nh.subscribe("/cam1/ar_pose_marker", 1000, &Poseback::pose_getleftCB,this);
+	sub_right_pose = nh.subscribe("/cam2/ar_pose_marker", 1000, &Poseback::pose_getrightCB,this);
 	multi_udp = nh.subscribe("/cross_info",1000, &Poseback::udp_info,this);
 // sending cmd msgs to robot3      
 	pub = nh.advertise<geometry_msgs::Twist>("robot3/cmd", 1000); 
@@ -40,7 +40,7 @@ class Poseback{
 	float heading;        //that is a relative heading for local robot, should change use robotj-roboti
 	bool find_left;	     // flag for find robot (1 for find, 0 for not)
 	bool find_right;
-           
+        int info_marker;   
     };	
 	
 
@@ -61,10 +61,10 @@ class Poseback{
 	int count_2;
 
 
-	void pose_solve(int rob_num,int i, struct robot &rob,const ar_track_alvar_msgs::AlvarMarkers &req, void (*pf)(struct robot &rob,float x,float y)); // function for pose analysis, input: robot#,ar_pose,tf_matraix,output: bool for robot detection
+	void pose_solve(int rob_num,int i, struct robot &rob,const ar_track_alvar_msgs::AlvarMarkers &req, void (*pf)(struct robot &rob,float x,float y,int i)); // function for pose analysis, input: robot#,ar_pose,tf_matraix,output: bool for robot detection
 
-	static void rotation_left(struct robot &rob, float x,float y);  // rotation for left camera
-	static void rotation_right(struct robot &rob,float x, float y); // rotation for right camera
+	static void rotation_left(struct robot &rob, float x,float y, int i);  // rotation for left camera
+	static void rotation_right(struct robot &rob,float x, float y, int i); // rotation for right camera
 	
 		
 	

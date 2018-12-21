@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
 	ros::param::get("~/single_test", test);
 
 	obj.designed={-0.8,0.3,-1.6,0};	// robot1,robot2 position
- 	ros::Rate rate(20);
+ 	ros::Rate rate(12);
 
 
  while(ros::ok()){

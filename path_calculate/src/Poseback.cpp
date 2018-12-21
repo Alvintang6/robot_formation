@@ -7,29 +7,30 @@
 #define pi 3.1415926
 
 
-
 ////left_cam callack with rotation matrix {cos-75 sin-75;-sin-75 cos-75 }={0.258 -0.965;0.965,0.258}
 ///{cos-65 sin-65;-sin-65 cos-65 }={0.4226 -0.9063;0.9063,0.4226}
-void Poseback::rotation_left(struct robot & rob, float x,float y){
+void Poseback::rotation_left(struct robot & rob, float x,float y,int i){
 	y = 0.7065*y-0.0014*y*y+0.0003*x+0.0102; x = 1.8256*x+0.0019*x*x+0.0422*y+0.0217;    // using lsqcurvefitting to conpensate camera
 	rob.distancex = 0.4226*x-0.9063*y;
 	rob.distancey = 0.9063*x+0.4226*y;
 	rob.find_left = 1;
+	rob.info_marker = i;
 }
 
 
 ////right_cam callback with the rotation matrix {cos75 sin75;-sin75 cos75}={0.258 0.965;-0.906 0.258}
 //{cos65 sin65;-sin65 cos65 }={0.4226 0.9063;-0.9063,0.4226}
-void Poseback::rotation_right(struct robot & rob, float x,float y){
+void Poseback::rotation_right(struct robot & rob, float x,float y,int i){
 	 x = 1.7783*x+0.0509*x*x-0.0384*y-0.0052;  y = 0.2684*y+0.1206*y*y+0.1431*x+0.32;  
 	rob.distancex = 0.4226*x+0.9063*y;
 	rob.distancey = -0.9063*x+0.4226*y;
 	rob.find_right = 1;
+	rob.info_marker = i;
 }
 
 
 
-void Poseback::pose_solve(int rob_num,int i, struct robot & rob, const ar_track_alvar_msgs::AlvarMarkers &req, void (*pf)(struct robot &rob,float x,float y)){
+void Poseback::pose_solve(int rob_num,int i, struct robot & rob, const ar_track_alvar_msgs::AlvarMarkers &req, void (*pf)(struct robot &rob,float x,float y,int)){
 
 
  	if(((req.markers[i].id-1)/4) == (rob_num-1)){
@@ -41,8 +42,8 @@ void Poseback::pose_solve(int rob_num,int i, struct robot & rob, const ar_track_
       double roll, pitch, yaw;
       m.getRPY(roll, pitch, yaw);
 // return the pose of robot1
-      (*pf)(rob,req.markers[i].pose.pose.position.x, req.markers[i].pose.pose.position.z );
-      //rob.heading = pitch*(-1) + 1.308 ;  
+      (*pf)(rob,req.markers[i].pose.pose.position.x, req.markers[i].pose.pose.position.z, req.markers[i].id);
+      //rob.heading = pitch*(-1) + 1.308 ; 
 	  }
 
 	   else if((req.markers[i].id%4) == 2){  //pitch + 1.570
@@ -52,9 +53,10 @@ tf::Quaternion q(req.markers[i].pose.pose.orientation.x, req.markers[i].pose.pos
       double roll, pitch, yaw;
       m.getRPY(roll, pitch, yaw);
        
-        (*pf)(rob,req.markers[i].pose.pose.position.x, req.markers[i].pose.pose.position.z );
+        (*pf)(rob,req.markers[i].pose.pose.position.x, req.markers[i].pose.pose.position.z, req.markers[i].id);
 	//computing yaw angle i robot coordination (should be modified when pitch < 0)
 	//rob.heading = pitch*(-1) + 1.308 + 1.570;
+	
 
 	  }
 	   else if((req.markers[i].id%4) == 3){ // pitch - 1.570
@@ -64,10 +66,10 @@ tf::Quaternion q(req.markers[i].pose.pose.orientation.x, req.markers[i].pose.pos
       double roll, pitch, yaw;
       m.getRPY(roll, pitch, yaw);
 
-        (*pf)(rob,req.markers[i].pose.pose.position.x, req.markers[i].pose.pose.position.z );
+        (*pf)(rob,req.markers[i].pose.pose.position.x, req.markers[i].pose.pose.position.z, req.markers[i].id);
 	//computing yaw angle i robot coordination (should be modified when pitch < 0)
 	//rob.heading = pitch*(-1) + 1.308 + 3.141;
-
+	
 	  }
 	   else{ //pitch +3.141
 
@@ -77,10 +79,9 @@ tf::Quaternion q(req.markers[i].pose.pose.orientation.x, req.markers[i].pose.pos
       double roll, pitch, yaw;
       m.getRPY(roll, pitch, yaw);
 
-        (*pf)(rob,req.markers[i].pose.pose.position.x, req.markers[i].pose.pose.position.z );
+        (*pf)(rob,req.markers[i].pose.pose.position.x, req.markers[i].pose.pose.position.z, req.markers[i].id);
 	//computing yaw angle i robot coordination (should be modified when pitch < 0)
 	//rob.heading = pitch*(-1) + 1.308 + 3.141;
-
 
       
 	  }

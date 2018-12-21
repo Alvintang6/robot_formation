@@ -10,7 +10,7 @@
 void usage(char **argv);
 
 const int calib_simple=1500;
-const int calib_inital=200;
+const int calib_inital=300;
 const int DATA_SIZE=10; 
 //const int MAX_READS=1000;
 
@@ -23,26 +23,20 @@ int main(int argc, char **argv)
 	ros::NodeHandle nh;
 
 	ros::Publisher pub_imu = nh.advertise<sensor_msgs::Imu>("/imu/data",1000);
-	ros::Publisher pub_mag = nh.advertise<sensor_msgs::MagneticField>("/imu/mag",1000);
+	//ros::Publisher pub_mag = nh.advertise<sensor_msgs::MagneticField>("/imu/mag",1000);
 
 	struct vmu *vmu=NULL;
 	// suppose we are intersted in euler, magnetometer and accelerometer
 	// note that quaternions and heading use different data types
-	struct vmu_txyz euler_data[DATA_SIZE];
-	//struct vmu_twxyz quat_data[DATA_SIZE];
-	struct vmu_txyz accel_data[DATA_SIZE];
+	struct vmu_txyz euler_data[DATA_SIZE];	
 	struct vmu_txyz gyro_data[DATA_SIZE];
-	struct vmu_txyz mag_data[DATA_SIZE];
 
 	struct vmu_data data={0}; //the library will return data here and note number of read values in data.size
 	struct vmu_size size={0}; //this notes sizes of our arrays, data.size is refreshed with this value before read
 
-	size.mag=size.accel = size.euler = size.gyro = DATA_SIZE;	
+	size.euler = size.gyro = DATA_SIZE;	
 
-	//data.quat = quat_data;
 	data.gyro = gyro_data;
-	data.accel = accel_data;
-	data.mag = mag_data;
 	data.euler = euler_data;
 	data.size = size;
 
@@ -85,7 +79,7 @@ int main(int argc, char **argv)
 		return 1;
 	}	
 	
-	if( vmu_stream(vmu,VMU_STREAM_MAG| VMU_STREAM_EULER |VMU_STREAM_GYRO | VMU_STREAM_ACCEL) == VMU_ERROR )
+	if( vmu_stream(vmu,VMU_STREAM_EULER |VMU_STREAM_GYRO) == VMU_ERROR )
 	{
 		ROS_INFO("failed to stream euler/mag/accel data");
 		exit(EXIT_FAILURE);
@@ -96,7 +90,7 @@ int main(int argc, char **argv)
  int calib_offset=calib_simple+calib_inital;
 
 
-        ros::Rate rate(120);
+        ros::Rate rate(150);
         
 while( ((ret=vmu_read_all(vmu, &data)) != VMU_ERROR))
 {
@@ -105,9 +99,9 @@ while( ((ret=vmu_read_all(vmu, &data)) != VMU_ERROR))
 	double gyro_temp_z=0;
 
 
-	    	sensor_msgs::MagneticField mag_data;
-		mag_data.header.stamp = ros::Time::now();
-		mag_data.header.frame_id = "imu_link";
+	    	//sensor_msgs::MagneticField mag_data;
+		//mag_data.header.stamp = ros::Time::now();
+		//mag_data.header.frame_id = "imu_link";
 
 	        sensor_msgs::Imu vmu_data;
     		vmu_data.header.stamp = ros::Time::now();
@@ -119,23 +113,7 @@ while( ((ret=vmu_read_all(vmu, &data)) != VMU_ERROR))
   		vmu_data.angular_velocity.y = data.gyro[i].y*0.01745329;
   		vmu_data.angular_velocity.z = data.gyro[i].z*0.01745329;
 	}
-	
 
-
-    //pass calibrated acceleration to corrected IMU data object
-	for(int i=0;i<data.size.accel;++i){
-		vmu_data.linear_acceleration.x = data.accel[i].x;
-	        vmu_data.linear_acceleration.y = data.accel[i].y;
-		vmu_data.linear_acceleration.z = data.accel[i].z;
-	}
-		
-  
-
-	for(int i=0;i<data.size.mag;++i){
-		mag_data.magnetic_field.x = data.mag[i].x*0.000001;
-	        mag_data.magnetic_field.y = data.mag[i].y*0.000001;
-		mag_data.magnetic_field.z = data.mag[i].z*0.000001;
-	}
 
 	for(int i=0;i<data.size.euler;++i){
 		gyro_temp_x = data.euler[i].x;
@@ -193,17 +171,10 @@ while( ((ret=vmu_read_all(vmu, &data)) != VMU_ERROR))
 	//refresh the sizes of the arrays for data streams
 	pub_imu.publish(vmu_data);
 
-	if((mag_data.magnetic_field.x !=0.0)& (mag_data.magnetic_field.y !=0.0) ){
-  	pub_mag.publish(mag_data);
-	}
   	
 	     data.size = size;
 
 	
-
-	//terminate after reading MAX_READS times
-		//remove those lines if you want to read infinitely
-		//if(++reads >= icMAX_READS) 
 	
 		//break;
 	rate.sleep();

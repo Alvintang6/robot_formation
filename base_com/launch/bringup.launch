@@ -10,6 +10,8 @@
   <node pkg="imu_calib" type="apply_calib" name="apply_calib" output="screen" respawn="false">
     <param name="calib_file" value="$(find rikirobot)/param/imu/imu_calib.yaml" />
   </node>
+
+
   <node pkg="imu_filter_madgwick" type="imu_filter_node" name="imu_filter_madgwick" respawn="false" >
      <param name="fixed_frame" value="odom" />
      <param name="use_mag" value="true" />
@@ -17,8 +19,8 @@
      <param name="use_magnetic_field_msg" value="true" />  
      <param name="world_frame" value="enu" />
   </node>
--->
 
+-->
 
   <node name="base_com" pkg="base_com" type="base_com_node">
     <param name="angular_scale" type="double" value="0.85" />

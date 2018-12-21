@@ -46,7 +46,7 @@ dsr_pos designed;
 
 private:
 
-	void l2g_rotation(float & x, float & y, float heading_self);
+	void l2g_rotation(const float & x,const float & y, float heading_self,float & rt_x, float & rt_y);
 
 
 };
