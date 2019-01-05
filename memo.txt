@@ -5,4 +5,13 @@
 3.set a threshold for total.gradient
 
 
+$ sudo nvpmodel -m 1
+
+places the Jetson into Max-Q mode.
+
+You can query which mode is currently being used:
+
+$ sudo nvpmodel -q –verbose
+
+
 

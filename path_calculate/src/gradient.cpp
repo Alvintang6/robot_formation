@@ -164,9 +164,9 @@ if((robot1.find_left == 1) ||(robot1.find_right == 1) )
 {	
 	float temp1_x,temp1_y;
 
- std::cout<<"robot1.markerID"<<robot1.info_marker<<"robot1.x"<<robot1.distancex<<"robot1.y"<<robot1.distancey<<std::endl;
+ std::cout<<"robot1.markerID"<<robot1.info_marker<<std::endl;
 	l2g_rotation(robot1.distancex,robot1.distancey, head_self,temp1_x,temp1_y); // for the rotation the posion of the robot from local to global
-	std::cout<<"heading_rotate"<<57.2974*head_self<<"robot1.x"<<temp1_x<<"robot1.y"<<temp1_y<<std::endl;
+	std::cout<<"heading_rotate"<<57.2974*head_self<<"robot1.x-globle"<<temp1_x<<"robot1.y-goble"<<temp1_y<<std::endl;
 	grad vij_1={};grad cij_1={};
 	float norm1_R,norm1_D;
 
