@@ -19,7 +19,7 @@ void Calib::pose_solve(int rob_num,int i, const ar_track_alvar_msgs::AlvarMarker
       double roll, pitch, yaw;
       m.getRPY(roll, pitch, yaw);
 // return the pose of robot1
-      printf("the position of robot%d, is x= %f,y=%f\n",rob_num,req.markers[i].pose.pose.position.x,req.markers[i].pose.pose.position.z);
+      printf("the position of robot%d, is(marker%d) x= %f,y=%f with pitch=%f \n",rob_num,req.markers[i].id,req.markers[i].pose.pose.position.x,req.markers[i].pose.pose.position.z, pitch);
 
 
       //rob.heading = pitch*(-1) + 1.308 ;  
@@ -32,8 +32,8 @@ void Calib::pose_solve(int rob_num,int i, const ar_track_alvar_msgs::AlvarMarker
       double roll, pitch, yaw;
       m.getRPY(roll, pitch, yaw);
        
-       printf("the position of robot%d, is x= %f,y=%f\n",rob_num,req.markers[i].pose.pose.position.x,req.markers[i].pose.pose.position.z);
-	//computing yaw angle i robot coordination (should be modified when pitch < 0)
+       printf("the position of robot%d, is(marker%d) x= %f,y=%f with pitch=%f \n",rob_num,req.markers[i].id,req.markers[i].pose.pose.position.x,req.markers[i].pose.pose.position.z, pitch);
+
 	//rob.heading = pitch*(-1) + 1.308 + 1.570;
 
 	  }
@@ -44,7 +44,8 @@ tf::Quaternion q(req.markers[i].pose.pose.orientation.x, req.markers[i].pose.pos
       double roll, pitch, yaw;
       m.getRPY(roll, pitch, yaw);
 
-       printf("the position of robot%d, is x= %f,y=%f\n",rob_num,req.markers[i].pose.pose.position.x,req.markers[i].pose.pose.position.z);
+      printf("the position of robot%d, is(marker%d) x= %f,y=%f with pitch=%f \n",rob_num,req.markers[i].id,req.markers[i].pose.pose.position.x,req.markers[i].pose.pose.position.z, pitch);
+
 	//computing yaw angle i robot coordination (should be modified when pitch < 0)
 	//rob.heading = pitch*(-1) + 1.308 + 3.141;
 
@@ -57,8 +58,8 @@ tf::Quaternion q(req.markers[i].pose.pose.orientation.x, req.markers[i].pose.pos
       double roll, pitch, yaw;
       m.getRPY(roll, pitch, yaw);
 
-       printf("the position of robot%d, is x= %f,y=%f\n",rob_num,req.markers[i].pose.pose.position.x,req.markers[i].pose.pose.position.z);
-	//computing yaw angle i robot coordination (should be modified when pitch < 0)
+       printf("the position of robot%d, is(marker%d) x= %f,y=%f with pitch=%f \n",rob_num,req.markers[i].id,req.markers[i].pose.pose.position.x,req.markers[i].pose.pose.position.z, pitch);
+
 	//rob.heading = pitch*(-1) + 1.308 + 3.141;
 
 

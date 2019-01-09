@@ -28,7 +28,6 @@ int main(int argc, char **argv) {
     //obj.pub.publish(msg);
     rate.sleep();
    
-// using callback once onl``y when have ros::spinonce
     ros::spinOnce();
     
  }
