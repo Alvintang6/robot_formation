@@ -10,7 +10,7 @@
 ////left_cam callack with rotation matrix {cos-75 sin-75;-sin-75 cos-75 }={0.258 -0.965;0.965,0.258}
 ///{cos-65 sin-65;-sin-65 cos-65 }={0.4226 -0.9063;0.9063,0.4226}
 void Poseback::rotation_left(struct robot & rob, float x,float y,int i){
-	y = 0.7065*y-0.0014*y*y+0.0003*x+0.0102; x = 1.8256*x+0.0019*x*x+0.0422*y+0.0217;    // using lsqcurvefitting to conpensate camera
+	x = 0.9727*x+0.0068*x*x-0.0305*y+0.011; y = 0.8536*y+0.0149*x-0.0294*x*x+0.0427;    // using lsqcurvefitting to conpensate camera
 	rob.distancex = 0.4226*x-0.9063*y;
 	rob.distancey = 0.9063*x+0.4226*y;
 	rob.find_left = 1;
@@ -21,7 +21,7 @@ void Poseback::rotation_left(struct robot & rob, float x,float y,int i){
 ////right_cam callback with the rotation matrix {cos75 sin75;-sin75 cos75}={0.258 0.965;-0.906 0.258}
 //{cos65 sin65;-sin65 cos65 }={0.4226 0.9063;-0.9063,0.4226}
 void Poseback::rotation_right(struct robot & rob, float x,float y,int i){
-	 x = 1.7783*x+0.0509*x*x-0.0384*y-0.0052;  y = 0.2684*y+0.1206*y*y+0.1431*x+0.32;  
+	 x = 0.9834*x-0.0003*x*x-0.0428*y-0.0229;  y = 0.8429*y+0.0523*y*y-0.044*x+0.0932;  
 	rob.distancex = 0.4226*x+0.9063*y;
 	rob.distancey = -0.9063*x+0.4226*y;
 	rob.find_right = 1;
