@@ -10,7 +10,7 @@
 ////left_cam callack with rotation matrix {cos-75 sin-75;-sin-75 cos-75 }={0.258 -0.965;0.965,0.258}
 ///{cos-65 sin-65;-sin-65 cos-65 }={0.4226 -0.9063;0.9063,0.4226}
 void Poseback::rotation_left(struct robot & rob, float x,float y,int i){
-	x = 0.9727*x+0.0068*x*x-0.0305*y+0.011; y = 0.8536*y+0.0149*x-0.0294*x*x+0.0427;    // using lsqcurvefitting to conpensate camera
+	x = 0.9677*x-0.0046*x*x-0.0258*y-0.0034; y = 0.8496*y+0.0291*x-0.0423*x*x+0.077;    // using lsqcurvefitting to conpensate camera
 	rob.distancex = 0.4226*x-0.9063*y;
 	rob.distancey = 0.9063*x+0.4226*y;
 	rob.find_left = 1;
@@ -21,7 +21,7 @@ void Poseback::rotation_left(struct robot & rob, float x,float y,int i){
 ////right_cam callback with the rotation matrix {cos75 sin75;-sin75 cos75}={0.258 0.965;-0.906 0.258}
 //{cos65 sin65;-sin65 cos65 }={0.4226 0.9063;-0.9063,0.4226}
 void Poseback::rotation_right(struct robot & rob, float x,float y,int i){
-	 x = 0.9834*x-0.0003*x*x-0.0428*y-0.0229;  y = 0.8429*y+0.0523*y*y-0.044*x+0.0932;  
+	 x = 0.9590*x-0.0058*x*x-0.0026*y-0.0056;  y = 0.8379*y+0.0066*y*y-0.0451*x+0.1123;  
 	rob.distancex = 0.4226*x+0.9063*y;
 	rob.distancey = -0.9063*x+0.4226*y;
 	rob.find_right = 1;
@@ -120,7 +120,7 @@ void Poseback::pose_getleftCB(const ar_track_alvar_msgs::AlvarMarkers &msg) {
 //check marker from #2 robot (should add bool as flag)
     for(i=0;i<mkr_cnt;i++){
      
-     pose_solve(2,i,robot2, msg, rotation_left);
+     pose_solve(3,i,robot2, msg, rotation_left);
 
     }
 
@@ -165,7 +165,7 @@ void Poseback::pose_getrightCB(const ar_track_alvar_msgs::AlvarMarkers &msg) {
 //check marker from #2 robot (should add bool as flag)
      for(i=0;i<mkr_cnt;i++){
      
-     pose_solve(2,i,robot2, msg, rotation_right);
+     pose_solve(3,i,robot2, msg, rotation_right);
 
      }
 
@@ -184,9 +184,9 @@ void Poseback::pose_getrightCB(const ar_track_alvar_msgs::AlvarMarkers &msg) {
 
 void Poseback::udp_info(const path_calculate::heading &msg) 
 {
-  head_self=msg.robot3;
+  head_self=msg.robot2;
   robot1.heading=msg.robot1;
-  robot2.heading=msg.robot2; 
+  robot2.heading=msg.robot3; 
   pc_ctrl=msg.laptop;
 printf("pc_ctrl = %d", pc_ctrl);
 

@@ -14,4 +14,9 @@ You can query which mode is currently being used:
 $ sudo nvpmodel -q –verbose
 
 
+!!!!!!!!!!!!!!!!!!!!!!!
 
+this robot using robot1 and robot2 as container to save info of robot1 and robot3
+
+
+!!!!!!!!!!!!!!!!!!!!!!!

@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
 	ros::param::get("~/threshold_grd",threshold); // threshlod for the gradient
 	ros::param::get("~/single_test", test);
 
-	obj.designed={-0.8,0.3,-1.6,0};	// robot1,robot2 position
+	obj.designed={0.8,0.3,1.6,0};	// robot1,robot3 position
  	ros::Rate rate(12);
 
 
