@@ -39,8 +39,8 @@ float Vx, Vy;
 
 	//}
 	
-		cmd.linear = v0-std::sqrt(total.gx*total.gx+total.gy*total.gy)*(Sign(-total.gy*sin(head_self)+total.gx*cos(head_self)));
-		cmd.angular = v0*(total.gy*sin((head_self+pi+desired_h)*0.5)-total.gx*cos((head_self+pi+desired_h)*0.5))-sin((head_self-desired_h)*0.5);
+		cmd.linear = v0-std::sqrt(total.gx*total.gx+total.gy*total.gy)*(Sign(total.gx*sin(head_self)-total.gy*cos(head_self)));
+		cmd.angular = v0*(-total.gx*sin((head_self+pi+desired_h)*0.5)+total.gy*cos((head_self+pi+desired_h)*0.5))-sin((head_self-desired_h)*0.5);
 		
 		
 
@@ -60,8 +60,8 @@ else{
  	norm_y = total.gy/(temp_max/motor_lim);
 
 
-		cmd.linear = v0-std::sqrt(norm_x*norm_x+norm_y*norm_y)*(Sign(-norm_y*sin(head_self)+norm_x*cos(head_self)));
-		cmd.angular = v0*(norm_y*sin((head_self+pi+desired_h)*0.5)-norm_x*cos((head_self+pi+desired_h)*0.5))-sin((head_self-desired_h)*0.5);
+		cmd.linear = v0-std::sqrt(norm_x*norm_x+norm_y*norm_y)*(Sign(norm_x*sin(head_self)-norm_y*cos(head_self)));
+		cmd.angular = v0*(-norm_x*sin((head_self+pi+desired_h)*0.5)+norm_y*cos((head_self+pi+desired_h)*0.5))-sin((head_self-desired_h)*0.5);
 
      
 
@@ -89,6 +89,10 @@ else{
 
 printf("robot1 position =%1.4f,%1.4f,robot2 position =%1.4f,%1.4f",robot1.distancex,robot1.distancey,robot2.distancex,robot2.distancey);
 std::cout<<"total.gx "<<total.gx<<"and total.gy"<<total.gy  <<std::endl;
+
+if (cmd.linear<0.1 && cmd.linear>-0.1)
+	cmd.linear=0;
+
 return cmd;
 
 }

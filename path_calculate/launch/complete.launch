@@ -26,9 +26,9 @@
    <param name="/desired_h" type="double" value="0"/>     
    <!--> UNIT FOR heading rad, volecity m/s  <-->
    <param name="/desired_v0" type="double" value="0"/>     
-   <param name="/motor_lim" type="double" value="0.5"/>
-   <param name="/k_vij" type="double" value="0.2"/>
-   <param name="/k_cij" type="double" value="0.2"/>
+   <param name="/motor_lim" type="double" value="0.45"/>
+   <param name="/k_vij" type="double" value="0.12"/>
+   <param name="/k_cij" type="double" value="0.15"/>
    <param name="/single_test" type="bool" value="true"/>
    </node>
 

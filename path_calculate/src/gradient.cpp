@@ -1,9 +1,9 @@
 #include "gradient.h"
 #include <iostream>
 #include <cmath>
-#define RS 2.5 
+#define RS 3 
 #define blind_a 40*pi/180
-#define bound 0.5  // bound for angle = 60 degree 
+#define bound 0.5  //safe bound for angle = 60 degree 
 #define pi 3.1415926
 
 
@@ -70,16 +70,24 @@ struct grad vij;
 //gd_y /= (coverage_Rs-den_y)*(coverage_Rs-den_y);
 double gx,gy;
 
-gx = (2*distancex*((desire_x-distancex)*(desire_x-distancex)-(desire_y-distancey)*(desire_y-distancey)));
+gx = (2*distancex*((desire_x-distancex)*(desire_x-distancex)+(desire_y-distancey)*(desire_y-distancey)));
 gx /= (std::sqrt(distancex*distancex+distancey*distancey)*(pow((coverage_Rs-std::sqrt(distancex*distancex+distancey*distancey)),3)));
 gx -= (2*desire_x-2*distancex)/pow((coverage_Rs-sqrt(distancex*distancex+distancey*distancey)),2);
 
-gy = (2*distancey*((desire_x-distancex)*(desire_x-distancex)-(desire_y-distancey)*(desire_y-distancey)));
+gy = (2*distancey*((desire_x-distancex)*(desire_x-distancex)+(desire_y-distancey)*(desire_y-distancey)));
 gy /= (std::sqrt(distancex*distancex+distancey*distancey)*(pow((coverage_Rs-std::sqrt(distancex*distancex+distancey*distancey)),3)));
 gy -= (2*desire_y-2*distancey)/pow((coverage_Rs-sqrt(distancex*distancex+distancey*distancey)),2);
 
-vij.gx = gx;
-vij.gy = gy;
+if(distancex*distancex+distancey*distancey< coverage_Rs* coverage_Rs)
+	{vij.gx = gx;
+	vij.gy = gy;
+}
+else {
+	printf("excecced the vision area \n");
+	vij.gx = -gx;
+	vij.gy = -gy;
+
+}
 
 std::cout<<"vij_more"<<vij.gx<<vij.gy<<std::endl;
 
@@ -88,19 +96,7 @@ return vij;
 }
 
 
-//void gradient::show_gradient()
-//{
 
-//float cur_x, cur_y;
- //std::cout<< "input current position"<< std::endl;
-//std::cin>> this->distance1_x >> this->distance1_y ;
-//std::cout<< "input desire position"<< std::endl;
-//std::cin>> cur_x >> cur_y ;
-//gd_vijless(cur_x,cur_y,distance1_x,distance1_y);
-//std::cout << "gradient_x=" << gX << std::endl;
-//std::cout <<"gradient_y="<< gY << std::endl;
-
-//}
 
 ////////////////
 // this function is used for calculate Cij (make robot out of blind zone)
@@ -123,13 +119,15 @@ cos_ij /= std::sqrt((sin_heading*sin_heading+cos_heading*cos_heading)*(disx*disx
 
 
 //printf("heading = %f \n", heading);
-//printf("cos_ij=%3.2f theat_ij=%3.2f\n",cos_ij,acos(cos_ij));
+//printf("cos_ij=%3.2f theat_ij=%3.2f\n",cos_ij,acos(cos_ij)*57.6);
 
 if(cos_ij>bound)
 {
 double h_cos,d_rijx,d_rijy;
 
-h_cos=(bound-cos_ij)/((cos_a-cos_ij)*(cos_a-cos_ij)*(cos_a-cos_ij));
+
+h_cos=(bound-cos_ij)/((cos_a-cos_ij)*(cos_a-cos_ij));
+//h_cos=(bound-cos_ij)/((cos_a-cos_ij)*(cos_a-cos_ij)*(cos_a-cos_ij));
 
 d_rijx=(sin_heading/pow(((cos_heading*cos_heading + sin_heading*sin_heading)*(disx*disx + disy*disy)),0.5) + (disx*(disy*cos_heading - disx*sin_heading)*(cos_heading*cos_heading + sin_heading*sin_heading))/pow(((cos_heading*cos_heading + sin_heading*sin_heading)*(disx*disx + disy*disy)),1.5))/pow((1 - (disy*cos_heading - disx*sin_heading)*(disy*cos_heading - disx*sin_heading)/((cos_heading*cos_heading + sin_heading*sin_heading)*(disx*disx + disy*disy))),0.5);
 
@@ -176,8 +174,6 @@ if((robot1.find_left == 1) ||(robot1.find_right == 1) )
 	norm1_D = designed.desire_1x*designed.desire_1x+designed.desire_1y*designed.desire_1y;
 	
 	
-	std::cout<<"norm1_Real = "<<norm1_R<<"norm1_Design"<<norm1_D<<std::endl;
-
 	
 	if(norm1_R<norm1_D)
 	{
@@ -188,7 +184,9 @@ if((robot1.find_left == 1) ||(robot1.find_right == 1) )
 	//std::cout<<"vij_1(x) outside"<<vij_1.gx<<vij_1.gy<<std::endl;
 	//std::cout<<"using vijless"<<std::endl;
 	}
+
 	
+
 	else{
 	vij_1=gd_vijmore(designed.desire_1x, designed.desire_1y,temp1_x,temp1_y, RS);
 	cij_1 = gd_cij(robot1.heading,temp1_x,temp1_y);
