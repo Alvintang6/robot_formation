@@ -121,12 +121,15 @@ ros::Publisher pub = nh.advertise<path_calculate::heading>("/cross_info",1000);
  //perror("socket create error!\n");
  //exit(-1);
  //}
-
+ std::string local_ip1;
+ char local_ip[14];
+ ros::param::get("/local_ip",local_ip1);
+ strcpy(local_ip,local_ip1.c_str());
 
  struct sockaddr_in addr;
  addr.sin_family=AF_INET;
  addr.sin_port=htons(10278);
- addr.sin_addr.s_addr=inet_addr("192.168.1.134"); // always bind loacl ip address
+ addr.sin_addr.s_addr=inet_addr(local_ip); // always bind loacl ip address
  
  
  int r;

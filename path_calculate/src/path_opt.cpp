@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
      obj.cmd = obj.vel_calculate(obj.total,motor_lim,desired_v0 ,desired_h); // (0,0)
 
      msg.linear.x = obj.cmd.linear; msg.angular.z=obj.cmd.angular;
-     printf("obj.cmd.linear= %f \n \n",obj.cmd.linear);
+     printf("obj.cmd.linear= %f obj.cmd.angular=%f \n \n",obj.cmd.linear,obj.cmd.angular);
 
      obj.pub.publish(msg);   
    }

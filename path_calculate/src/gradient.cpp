@@ -70,16 +70,26 @@ struct grad vij;
 //gd_y /= (coverage_Rs-den_y)*(coverage_Rs-den_y);
 double gx,gy;
 
-gx = (2*distancex*((desire_x-distancex)*(desire_x-distancex)-(desire_y-distancey)*(desire_y-distancey)));
+gx = (2*distancex*((desire_x-distancex)*(desire_x-distancex)+(desire_y-distancey)*(desire_y-distancey)));
 gx /= (std::sqrt(distancex*distancex+distancey*distancey)*(pow((coverage_Rs-std::sqrt(distancex*distancex+distancey*distancey)),3)));
 gx -= (2*desire_x-2*distancex)/pow((coverage_Rs-sqrt(distancex*distancex+distancey*distancey)),2);
 
-gy = (2*distancey*((desire_x-distancex)*(desire_x-distancex)-(desire_y-distancey)*(desire_y-distancey)));
+gy = (2*distancey*((desire_x-distancex)*(desire_x-distancex)+(desire_y-distancey)*(desire_y-distancey)));
 gy /= (std::sqrt(distancex*distancex+distancey*distancey)*(pow((coverage_Rs-std::sqrt(distancex*distancex+distancey*distancey)),3)));
 gy -= (2*desire_y-2*distancey)/pow((coverage_Rs-sqrt(distancex*distancex+distancey*distancey)),2);
 
-vij.gx = gx;
-vij.gy = gy;
+
+if(distancex*distancex+distancey*distancey< coverage_Rs* coverage_Rs)
+	{vij.gx = gx;
+	vij.gy = gy;
+}
+else {
+	printf("excecced the vision area \n");
+	vij.gx = -gx;
+	vij.gy = -gy;
+
+}
+
 
 std::cout<<"vij_more"<<vij.gx<<vij.gy<<std::endl;
 
@@ -129,7 +139,7 @@ if(cos_ij>bound)
 {
 double h_cos,d_rijx,d_rijy;
 
-h_cos=(bound-cos_ij)/((cos_a-cos_ij)*(cos_a-cos_ij)*(cos_a-cos_ij));
+h_cos=(bound-cos_ij)/((cos_a-cos_ij)*(cos_a-cos_ij));
 
 d_rijx=(sin_heading/pow(((cos_heading*cos_heading + sin_heading*sin_heading)*(disx*disx + disy*disy)),0.5) + (disx*(disy*cos_heading - disx*sin_heading)*(cos_heading*cos_heading + sin_heading*sin_heading))/pow(((cos_heading*cos_heading + sin_heading*sin_heading)*(disx*disx + disy*disy)),1.5))/pow((1 - (disy*cos_heading - disx*sin_heading)*(disy*cos_heading - disx*sin_heading)/((cos_heading*cos_heading + sin_heading*sin_heading)*(disx*disx + disy*disy))),0.5);
 
@@ -195,8 +205,8 @@ if((robot1.find_left == 1) ||(robot1.find_right == 1) )
 	//std::cout<<"using vijMORE"<<std::endl;	
 
 	}
-	total.gx = kv*vij_1.gx+kc*cij_1.gx;
-	total.gy = kv*vij_1.gy+kc*cij_1.gy;
+	total.gx = 0.5*kv*vij_1.gx+kc*cij_1.gx;
+	total.gy = 0.5*kv*vij_1.gy+kc*cij_1.gy;
 
 
 
@@ -232,8 +242,8 @@ if((robot2.find_left == 1) || (robot2.find_right == 1))
 	std::cout<<"vij_22(x)="<<vij_2.gx<<std::endl;
 	}
 
-	total.gx += kv*vij_2.gx+kc*cij_2.gx;
-	total.gy += kv*vij_2.gy+kc*cij_2.gy;
+	total.gx += 3*kv*vij_2.gx+kc*cij_2.gx;
+	total.gy += 3*kv*vij_2.gy+kc*cij_2.gy;
 
 	std::cout<<"cij_2(x)="<<cij_2.gx<<std::endl;
 	std::cout<<"cij_2(Y)="<<cij_2.gy<<std::endl;
