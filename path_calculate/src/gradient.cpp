@@ -193,8 +193,8 @@ if((robot1.find_left == 1) ||(robot1.find_right == 1) )
 	//std::cout<<"using vijMORE"<<std::endl;	
 
 	}
-	total.gx = kv*vij_1.gx+kc*cij_1.gx;
-	total.gy = kv*vij_1.gy+kc*cij_1.gy;
+	total.gx = 3*kv*vij_1.gx+kc*cij_1.gx;
+	total.gy = 3*kv*vij_1.gy+kc*cij_1.gy;
 
 
 
@@ -230,8 +230,8 @@ if((robot2.find_left == 1) || (robot2.find_right == 1))
 	std::cout<<"vij_22(x)="<<vij_2.gx<<std::endl;
 	}
 
-	total.gx += kv*vij_2.gx+kc*cij_2.gx;
-	total.gy += kv*vij_2.gy+kc*cij_2.gy;
+	total.gx += 0.5*kv*vij_2.gx+kc*cij_2.gx;
+	total.gy += 0.5*kv*vij_2.gy+kc*cij_2.gy;
 
 	std::cout<<"cij_2(x)="<<cij_2.gx<<std::endl;
 	std::cout<<"cij_2(Y)="<<cij_2.gy<<std::endl;

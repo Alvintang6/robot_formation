@@ -19,17 +19,17 @@
    <param name="/port" type="str" value="/dev/ttyACM0"/>
    </node>
    
-   <node pkg="rosbag" type="record" name = "record_odom" args="-o /Desktop /odom -O path.bag" />
+   <node pkg="rosbag" type="record" name = "record_odom" args="-o $(find path_calculate)/bags/robot2 /odom" />
   
    <node pkg="path_calculate" name = "cmd_pub" type ="path_opt" output="screen" >
    <remap from="/robot3/cmd" to="/cmd_vel"/>
    <param name="/desired_h" type="double" value="0"/>     
    <!--> UNIT FOR heading rad, volecity m/s  <-->
    <param name="/desired_v0" type="double" value="0"/>     
-   <param name="/motor_lim" type="double" value="0.45"/>
-   <param name="/k_vij" type="double" value="0.12"/>
-   <param name="/k_cij" type="double" value="0.15"/>
-   <param name="/single_test" type="bool" value="true"/>
+   <param name="/motor_lim" type="double" value="0.3"/>
+   <param name="/k_vij" type="double" value="0.1"/>
+   <param name="/k_cij" type="double" value="0.12"/>
+   <param name="/single_test" type="bool" value="false"/>
    </node>
 
 
