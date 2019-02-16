@@ -255,6 +255,7 @@ if((robot2.find_left == 1) || (robot2.find_right == 1))
 //std::cout<<"norm_Real = "<<norm2_R<<"norm_Design="<<norm2_D<<std::endl;
 
 }
+	
 	if (std::sqrt(total.gx*total.gx+total.gy*total.gy)<= threshold)
 	{
 		total.gx = 0;

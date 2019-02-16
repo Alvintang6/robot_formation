@@ -25,15 +25,15 @@
    <remap from="/robot3/cmd" to="/cmd_vel"/>
    <param name="/desired_h" type="double" value="0"/>     
    <!--> UNIT FOR heading rad, volecity m/s  <-->
-   <param name="/desired_v0" type="double" value="0.2"/>     
-   <param name="/motor_lim" type="double" value="0.16"/>
+   <param name="/desired_v" type="double" value="0.12"/>     
+   <param name="/motor_lim" type="double" value="0.12"/>
    <param name="/k_vij" type="double" value="0.08"/>
    <param name="/k_cij" type="double" value="0.12"/>
-   <param name="/k_rotate" type="double" value="50"/>
-   <param name="/k_vjm" type="double" value="0.1"/>
+   <param name="/k_rotate" type="double" value="30"/>
+   <param name="/k_vjm" type="double" value="0.5"/>
    <param name="/coverage" type="double" value="3"/>
-   <param name="/threshold_grd" type="double" value="0.15">
-   <param name="/single_test" type="bool" value="false"/>
+   <param name="/threshold_grd" type="double" value="0.03"/>
+   <param name="/single_test" type="bool" value="true"/>
    </node>
 
 

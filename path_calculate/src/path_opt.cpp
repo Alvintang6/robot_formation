@@ -29,7 +29,7 @@ int main(int argc, char **argv) {
 
 	obj.designed={-0.8,0.3,-1.6,0};	// robot1,robot2 position
  	ros::Rate rate(12);
-
+   
 
  while(ros::ok()){
 
@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
   if(obj.pc_ctrl==1 || test==true){
      geometry_msgs::Twist msg;    
      obj.total= obj.total_gradient(obj.designed,kvij,kcij,threshold,RS,k_vjm);
-     obj.cmd = obj.vel_calculate(obj.total,motor_lim,desired_v0 ,desired_h,k_rotate); // (0,0)
+     obj.cmd = obj.vel_calculate(obj.total,motor_lim,desired_v0,desired_h,k_rotate); // (0,0)
 
      msg.linear.x = obj.cmd.linear; msg.angular.z=obj.cmd.angular;
      printf("obj.cmd.linear= %f obj.cmd.angular=%f \n \n",obj.cmd.linear,obj.cmd.angular);
