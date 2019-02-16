@@ -33,7 +33,7 @@
    <param name="/k_vjm" type="double" value="0.5"/>
    <param name="/coverage" type="double" value="3"/>
    <param name="/threshold_grd" type="double" value="0.03"/>
-   <param name="/single_test" type="bool" value="true"/>
+   <param name="/single_test" type="bool" value="flase"/>
    </node>
 
 
