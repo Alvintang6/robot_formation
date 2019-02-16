@@ -38,8 +38,7 @@ dsr_pos designed;
 
 
 
-// should be finished ......
-	struct grad total_gradient(const struct dsr_pos &designed,float kv,float kc,float threshold); 
+	struct grad total_gradient(const struct dsr_pos &designed,float kv,float kc,float threshold, float RS,float k_vjm); 
 
 	grad total;
 
