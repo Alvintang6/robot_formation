@@ -5,7 +5,7 @@
 
 <group ns="cam1">
 
-  <arg name="DEVICE" default="/dev/video1"/>
+  <arg name="DEVICE" default="/dev/video2"/>
   <!-- The GStreamer framerate needs to be an integral fraction -->
   <arg name="FPS" default="30/1"/>
   <arg name="PUBLISH_FRAME" default="false"/>
@@ -48,7 +48,7 @@
 
 <group ns="cam2">
 
-  <arg name="DEVICE" default="/dev/video2"/>
+  <arg name="DEVICE" default="/dev/video1"/>
   <!-- The GStreamer framerate needs to be an integral fraction -->
   <arg name="FPS" default="30/1"/>
   <arg name="PUBLISH_FRAME" default="false"/>

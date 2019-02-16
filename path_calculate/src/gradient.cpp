@@ -1,7 +1,6 @@
 #include "gradient.h"
 #include <iostream>
 #include <cmath>
-#define RS 2.5 
 #define blind_a 40*pi/180
 #define bound 0.5  // bound for angle = 60 degree 
 #define pi 3.1415926
@@ -70,16 +69,25 @@ struct grad vij;
 //gd_y /= (coverage_Rs-den_y)*(coverage_Rs-den_y);
 double gx,gy;
 
-gx = (2*distancex*((desire_x-distancex)*(desire_x-distancex)-(desire_y-distancey)*(desire_y-distancey)));
+gx = (2*distancex*((desire_x-distancex)*(desire_x-distancex)+(desire_y-distancey)*(desire_y-distancey)));
 gx /= (std::sqrt(distancex*distancex+distancey*distancey)*(pow((coverage_Rs-std::sqrt(distancex*distancex+distancey*distancey)),3)));
 gx -= (2*desire_x-2*distancex)/pow((coverage_Rs-sqrt(distancex*distancex+distancey*distancey)),2);
 
-gy = (2*distancey*((desire_x-distancex)*(desire_x-distancex)-(desire_y-distancey)*(desire_y-distancey)));
+gy = (2*distancey*((desire_x-distancex)*(desire_x-distancex)+(desire_y-distancey)*(desire_y-distancey)));
 gy /= (std::sqrt(distancex*distancex+distancey*distancey)*(pow((coverage_Rs-std::sqrt(distancex*distancex+distancey*distancey)),3)));
 gy -= (2*desire_y-2*distancey)/pow((coverage_Rs-sqrt(distancex*distancex+distancey*distancey)),2);
 
-vij.gx = gx;
-vij.gy = gy;
+if(distancex*distancex+distancey*distancey< coverage_Rs* coverage_Rs)
+	{vij.gx = gx;
+	vij.gy = gy;
+}
+else {
+	printf("excecced the vision area \n");
+	vij.gx = -gx;
+	vij.gy = -gy;
+
+}
+
 
 std::cout<<"vij_more"<<vij.gx<<vij.gy<<std::endl;
 
@@ -129,7 +137,7 @@ if(cos_ij>bound)
 {
 double h_cos,d_rijx,d_rijy;
 
-h_cos=(bound-cos_ij)/((cos_a-cos_ij)*(cos_a-cos_ij)*(cos_a-cos_ij));
+h_cos=(bound-cos_ij)/((cos_a-cos_ij)*(cos_a-cos_ij));
 
 d_rijx=(sin_heading/pow(((cos_heading*cos_heading + sin_heading*sin_heading)*(disx*disx + disy*disy)),0.5) + (disx*(disy*cos_heading - disx*sin_heading)*(cos_heading*cos_heading + sin_heading*sin_heading))/pow(((cos_heading*cos_heading + sin_heading*sin_heading)*(disx*disx + disy*disy)),1.5))/pow((1 - (disy*cos_heading - disx*sin_heading)*(disy*cos_heading - disx*sin_heading)/((cos_heading*cos_heading + sin_heading*sin_heading)*(disx*disx + disy*disy))),0.5);
 
@@ -154,7 +162,7 @@ return cij;
 
 
 
-gradient::grad gradient::total_gradient(const struct dsr_pos &designed,float kv,float kc,float threshold){
+gradient::grad gradient::total_gradient(const struct dsr_pos &designed,float kv,float kc,float threshold,float RS,float k_vjm){
 
 grad total ={};
 
@@ -191,6 +199,8 @@ if((robot1.find_left == 1) ||(robot1.find_right == 1) )
 	
 	else{
 	vij_1=gd_vijmore(designed.desire_1x, designed.desire_1y,temp1_x,temp1_y, RS);
+	vij_1.gx*=k_vjm;
+	vij_1.gy*=k_vjm;
 	cij_1 = gd_cij(robot1.heading,temp1_x,temp1_y);
 	//std::cout<<"using vijMORE"<<std::endl;	
 
@@ -222,6 +232,8 @@ if((robot2.find_left == 1) || (robot2.find_right == 1))
 
 	if(norm2_R<norm2_D){
 	vij_2=gd_vijless(designed.desire_2x,designed.desire_2y,temp2_x,temp2_y);
+	vij_2.gx*=k_vjm;
+	vij_2.gy*=k_vjm;
 	cij_2=gd_cij(robot2.heading,temp2_x,temp2_y);
 	
 	}

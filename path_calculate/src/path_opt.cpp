@@ -10,7 +10,8 @@ int main(int argc, char **argv) {
 
 
        float desired_v0,desired_h,motor_lim;  //where desired_h is offset value and should in radain uint
-       float kvij,kcij,threshold;
+       float k_vjm,kvij,kcij,k_rotate,threshold;
+       float RS;
 	bool test=0;
 
 	ros::init(argc, argv, "cam_pub");
@@ -20,11 +21,15 @@ int main(int argc, char **argv) {
 	ros::param::get("~/motor_lim",motor_lim);
 	ros::param::get("~/k_vij",kvij);          // weight for cost function
 	ros::param::get("~/k_cij",kcij);          // weight for cost function
+	ros::param::get("~/coverage",RS);
+	ros::param::get("~/k_vjm",k_vjm);
 	ros::param::get("~/threshold_grd",threshold); // threshlod for the gradient
 	ros::param::get("~/single_test", test);
+	ros::param::get("~/k_rotate", k_rotate);   // weight for angular velocity
 
-	obj.designed={-0.8,0.3,-1.6,0};	// robot1,robot2 position
- 	ros::Rate rate(12);
+
+	obj.designed={-0.8,-0.3,0.8,-0.3};	// robot2,robot3 position saved in the struct of robot1 and robot2 
+  	ros::Rate rate(12);
 
 
  while(ros::ok()){
@@ -32,11 +37,11 @@ int main(int argc, char **argv) {
 
   if(obj.pc_ctrl==1 || test==true){
      geometry_msgs::Twist msg;    
-     obj.total= obj.total_gradient(obj.designed,kvij,kcij,threshold);
-     obj.cmd = obj.vel_calculate(obj.total,motor_lim,desired_v0 ,desired_h); // (0,0)
+     obj.total= obj.total_gradient(obj.designed,kvij,kcij,threshold,RS,k_vjm);
+     obj.cmd = obj.vel_calculate(obj.total,motor_lim,desired_v0 ,desired_h,k_rotate); // (0,0)
 
      msg.linear.x = obj.cmd.linear; msg.angular.z=obj.cmd.angular;
-     printf("obj.cmd.linear= %f \n \n",obj.cmd.linear);
+     printf("obj.cmd.linear= %f obj.cmd.angular=%f \n \n",obj.cmd.linear,obj.cmd.angular);
 
      obj.pub.publish(msg);   
    }

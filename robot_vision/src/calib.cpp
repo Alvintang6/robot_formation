@@ -86,14 +86,14 @@ void Calib::pose_CB(const ar_track_alvar_msgs::AlvarMarkers &msg) {
 //check marker from #1 robot (should add bool as flag)
     for(i=0;i<mkr_cnt;i++){ // in the future if there are many robots can use break quit for loop when (robot_find=1)
 
-    pose_solve(1,i, msg);
+    pose_solve(2,i, msg);
 
     }
 
 //check marker from #2 robot (should add bool as flag)
     for(i=0;i<mkr_cnt;i++){
      
-     pose_solve(2,i, msg);
+     pose_solve(3,i, msg);
 
 
     }

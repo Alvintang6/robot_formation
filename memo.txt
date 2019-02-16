@@ -14,4 +14,10 @@ You can query which mode is currently being used:
 $ sudo nvpmodel -q –verbose
 
 
+$ !!!!!!!!!!!!!!!!!!!!!!!!!!
+
+ in this robot just using robot1 to save the info of robot2 &robot2 to save the info of robot3
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 
