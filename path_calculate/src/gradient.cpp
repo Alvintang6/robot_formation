@@ -1,7 +1,6 @@
 #include "gradient.h"
 #include <iostream>
 #include <cmath>
-#define RS 3 
 #define blind_a 40*pi/180
 #define bound 0.5  //safe bound for angle = 60 degree 
 #define pi 3.1415926
@@ -152,7 +151,7 @@ return cij;
 
 
 
-gradient::grad gradient::total_gradient(const struct dsr_pos &designed,float kv,float kc,float threshold){
+gradient::grad gradient::total_gradient(const struct dsr_pos &designed,float kv,float kc,float threshold,float RS,float k_vjm){
 
 grad total ={};
 
@@ -189,6 +188,8 @@ if((robot1.find_left == 1) ||(robot1.find_right == 1) )
 
 	else{
 	vij_1=gd_vijmore(designed.desire_1x, designed.desire_1y,temp1_x,temp1_y, RS);
+	vij_1.gx*=k_vjm;
+	vij_1.gy*=k_vjm;
 	cij_1 = gd_cij(robot1.heading,temp1_x,temp1_y);
 	//std::cout<<"using vijMORE"<<std::endl;	
 
@@ -220,6 +221,8 @@ if((robot2.find_left == 1) || (robot2.find_right == 1))
 
 	if(norm2_R<norm2_D){
 	vij_2=gd_vijless(designed.desire_2x,designed.desire_2y,temp2_x,temp2_y);
+	vij_2.gx*=k_vjm;
+	vij_2.gy*=k_vjm;
 	cij_2=gd_cij(robot2.heading,temp2_x,temp2_y);
 	
 	}

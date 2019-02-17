@@ -22,7 +22,7 @@ public:
 
 
 
-	struct speed vel_calculate(struct grad total,const float motor_lim, float v0,float desired_h);
+	struct speed vel_calculate(struct grad total,const float motor_lim, float v0,float desired_h,float k_rotate);
 
 speed cmd;
 
