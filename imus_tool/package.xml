@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>test_tools</name>
+  <name>imus_tool</name>
   <version>0.0.0</version>
   <description>The test_tools package</description>
 

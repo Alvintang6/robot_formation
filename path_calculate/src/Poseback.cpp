@@ -114,11 +114,7 @@ void Poseback::pose_getleftCB(const ar_track_alvar_msgs::AlvarMarkers &msg) {
 
     pose_solve(1,i,robot1, msg, rotation_left);
 
-
-    }
-
-//check marker from #2 robot (should add bool as flag)
-    for(i=0;i<mkr_cnt;i++){
+//check marker from #2 robot (should add bool as flag)  
      
      pose_solve(2,i,robot2, msg, rotation_left);
 
@@ -184,8 +180,8 @@ void Poseback::pose_getrightCB(const ar_track_alvar_msgs::AlvarMarkers &msg) {
 
 void Poseback::udp_info(const path_calculate::heading &msg) 
 {
-  head_self=msg.robot3;
-  robot1.heading=msg.robot1;
+  head_self=msg.robot1;
+  robot1.heading=msg.robot3;
   robot2.heading=msg.robot2; 
   pc_ctrl=msg.laptop;
 printf("pc_ctrl = %d", pc_ctrl);

@@ -2,21 +2,18 @@
    <include file="$(find robot_vision)/launch/dul_gsteamer.launch"/>
 
    <include file="$(find base_com)/launch/bringup.launch"/>
-
+   <include file="$(find phidgets_imu)/launch/imu_angler.launch"/>
 
    <param name="/robot1_ip" type="str" value="192.168.1.125" />
    <param name="/robot2_ip" type="str" value="192.168.1.147" />
    <param name="/robot3_ip" type="str" value="192.168.1.134" />
-   <param name="/local_ip" type="str"  value="192.168.1.134" />
+   <param name="/local_ip" type="str"  value="192.168.1.125" />
    <param name="/laptop_ip" type="str" value="192.168.1.127" />
 
    
    <node pkg="path_calculate" name = "udp_send" type ="udp_client" />
    <node pkg="path_calculate" name = "udp_recv" type ="udp_server" />
 
-   <node pkg="vmu931" name = "vmu931" type ="vmu931_node" output="screen" >
-   <param name="/port" type="str" value="/dev/ttyACM0"/>
-   </node>
 
    <node pkg="rosbag" type="record" name = "record_odom" args="-o $(find path_calculate)/bags/robot3 /odom" />
 
@@ -33,7 +30,7 @@
    <param name="/k_vjm" type="double" value="0.5"/>
    <param name="/coverage" type="double" value="3"/>
    <param name="/threshold_grd" type="double" value="0.03"/>
-   <param name="/single_test" type="bool" value="flase"/>
+   <param name="/single_test" type="bool" value="true"/>
    </node>
 
 

@@ -23,7 +23,7 @@
 -->
 
   <node name="base_com" pkg="base_com" type="base_com_node">
-    <param name="angular_scale" type="double" value="0.85" />
+    <param name="angular_scale" type="double" value="1" />
     <param name="linear_scale" type="double" value="1.0" />
   </node>
 </launch>

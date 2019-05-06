@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(test_tools)
+project(imus_tool)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -111,6 +111,10 @@ include_directories(
  add_executable(imu_calib src/imu_docalib.cpp)
  add_dependencies(imu_calib ${catkin_EXPORTED_TARGETS})
  target_link_libraries(imu_calib ${catkin_LIBRARIES})
+
+ add_executable(imu_vel2ang src/imu_vel2ang.cpp)
+ add_dependencies(imu_vel2ang ${catkin_EXPORTED_TARGETS})
+ target_link_libraries(imu_vel2ang ${catkin_LIBRARIES})
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the

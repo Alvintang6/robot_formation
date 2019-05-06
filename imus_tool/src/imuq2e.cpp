@@ -32,23 +32,12 @@ printf("angular_value calculated %f \n",head_cback);
 
 int main(int argc, char **argv){
 
- std::string topic_n="/imu/data_raw";
-
-  ros::param::get("~/topic_name",topic_n);
   
-  char topic[30];
-
- if(topic[3]== NULL)
-{
-printf("you can enter yourown topic of the quatertion ");
-}
-
-strcpy(topic,topic_n.c_str());
 
  ros::init(argc, argv, "quater2ang");
  ros::NodeHandle n;
 
- ros::Subscriber sub = n.subscribe(topic, 1000, quater_CB);
+ ros::Subscriber sub = n.subscribe("/imu/data", 1000, quater_CB);
 
  ros::spin();
 
