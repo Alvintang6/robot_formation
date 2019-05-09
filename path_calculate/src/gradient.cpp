@@ -46,27 +46,7 @@ gradient::grad gradient::gd_vijmore(float desire_x,float desire_y,float distance
 // this gradient is for the current formation large than Hij, note part using numerical way.
 
 struct grad vij;
-// below is for numerical calculate the gradient 
 
-//double dd1_x, J_cost,dd1_y, gd_x,gd_y; 
-//double den,den_x,den_y;
-
-//J_cost = (distancex-desire_x)*(distancex-desire_x)+(distancey-desire_y)*(distancey-desire_y);
-//den = std::sqrt(distancex*distancex+distancey*distancey);
-//J_cost /= ((coverage_Rs-den)*(coverage_Rs-den));
-
-//std::cout<< J_cost << std::endl;
-
-//dd1_x = distancex + 0.000000001;
-//dd1_y = distancey + 0.000000001;
-
-//gd_x = (dd1_x-desire_x)*(dd1_x-desire_x)+(distancey-desire_y)*(distancey-desire_y);
-//den_x = std::sqrt(dd1_x*dd1_x+distancey*distancey);
-//gd_x /= (coverage_Rs-den_x)*(coverage_Rs-den_x);
-
-//gd_y = (dd1_y-desire_y)*(dd1_y-desire_y)+(distancex-desire_x)*(distancex-desire_x);
-//den_y = std::sqrt(dd1_y*dd1_y+distancex*distancex);
-//gd_y /= (coverage_Rs-den_y)*(coverage_Rs-den_y);
 double gx,gy;
 
 gx = (2*distancex*((desire_x-distancex)*(desire_x-distancex)+(desire_y-distancey)*(desire_y-distancey)));
@@ -96,20 +76,6 @@ return vij;
 
 }
 
-
-//void gradient::show_gradient()
-//{
-
-//float cur_x, cur_y;
- //std::cout<< "input current position"<< std::endl;
-//std::cin>> this->distance1_x >> this->distance1_y ;
-//std::cout<< "input desire position"<< std::endl;
-//std::cin>> cur_x >> cur_y ;
-//gd_vijless(cur_x,cur_y,distance1_x,distance1_y);
-//std::cout << "gradient_x=" << gX << std::endl;
-//std::cout <<"gradient_y="<< gY << std::endl;
-
-//}
 
 ////////////////
 // this function is used for calculate Cij (make robot out of blind zone)
@@ -163,100 +129,81 @@ return cij;
 
 
 
-gradient::grad gradient::total_gradient(const struct dsr_pos &designed,float kv,float kc,float threshold,float RS,float k_vjm){
 
-grad total ={};
+gradient::grad gradient::gd_add(int buffer_i,float kv,float kc,float threshold, float RS,float k_vjm){
+	grad return_grad_={0,0};
 
-printf("robot1.find_left = %d , robot1.find_right= %d \n",robot1.find_left,robot1.find_right);
+	if((robots[buffer_i].find_left == 1) ||(robots[buffer_i].find_right == 1) )
+	{	
+		float temp1_x,temp1_y;
 
-if((robot1.find_left == 1) ||(robot1.find_right == 1) )
-{	
-	float temp1_x,temp1_y;
+ 		std::cout<<"robot1.markerID"<<robots[0].info_marker<<std::endl;
+		// for the rotation the posion of the robot from local to global
+		l2g_rotation(robots[buffer_i].distancex,robots[buffer_i].distancey, head_self,temp1_x,temp1_y); 
+		std::cout<<"heading_rotate"<<57.2974*head_self<<"robot1.x-globle"<<temp1_x<<"robot1.y-goble"<<temp1_y<<std::endl;
+		grad vij_={};grad cij_={};
+		float norm1_R,norm1_D;
 
- std::cout<<"robot1.markerID"<<robot1.info_marker<<std::endl;
-	l2g_rotation(robot1.distancex,robot1.distancey, head_self,temp1_x,temp1_y); // for the rotation the posion of the robot from local to global
-	std::cout<<"heading_rotate"<<57.2974*head_self<<"robot1.x-globle"<<temp1_x<<"robot1.y-goble"<<temp1_y<<std::endl;
-	grad vij_1={};grad cij_1={};
-	float norm1_R,norm1_D;
-
-	// the variable for norm_R calculateed by robot(defined in class)
-	norm1_R = temp1_x*temp1_x+temp1_y*temp1_y;
-	// the variable defined inside the function	
-	norm1_D = designed.desire_1x*designed.desire_1x+designed.desire_1y*designed.desire_1y;
+		// the variable for norm_R calculateed by robot(defined in class)
+		norm1_R = temp1_x*temp1_x+temp1_y*temp1_y;
+		// the variable defined inside the function	
+		norm1_D = graph[buffer_i].desire_x*graph[buffer_i].desire_x+graph[buffer_i].desire_y*graph[buffer_i].desire_y;
 	
 	
-	std::cout<<"norm1_Real = "<<norm1_R<<"norm1_Design"<<norm1_D<<std::endl;
+		std::cout<<"norm1_Real = "<<norm1_R<<"norm1_Design"<<norm1_D<<std::endl;
 
 	
-	if(norm1_R<norm1_D)
-	{
-	vij_1=gd_vijless(designed.desire_1x,designed.desire_1y,temp1_x,temp1_y);
-	// cij should be modify
-	cij_1=gd_cij(robot1.heading,temp1_x,temp1_y);
+		if(norm1_R<norm1_D)
+		{
+			vij_=gd_vijless(graph[buffer_i].desire_x,graph[buffer_i].desire_y,temp1_x,temp1_y);
+			// cij should be modify
+			cij_=gd_cij(robots[buffer_i].heading,temp1_x,temp1_y);
 	
-	//std::cout<<"vij_1(x) outside"<<vij_1.gx<<vij_1.gy<<std::endl;
-	//std::cout<<"using vijless"<<std::endl;
+			//std::cout<<"vij_1(x) outside"<<vij_1.gx<<vij_1.gy<<std::endl;
+			//std::cout<<"using vijless"<<std::endl;
+		}
+	
+		else{
+			vij_=gd_vijmore(graph[buffer_i].desire_x, graph[buffer_i].desire_y,temp1_x,temp1_y, RS);
+			vij_.gx*=k_vjm;
+			vij_.gy*=k_vjm;	
+			cij_ = gd_cij(robots[buffer_i].heading,temp1_x,temp1_y);
+			//std::cout<<"using vijMORE"<<std::endl;	
+
+		}
+		return_grad_.gx = kv*vij_.gx+kc*cij_.gx;
+		return_grad_.gy = kv*vij_.gy+kc*cij_.gy;
+
 	}
-	
-	else{
-	vij_1=gd_vijmore(designed.desire_1x, designed.desire_1y,temp1_x,temp1_y, RS);
-	vij_1.gx*=k_vjm;
-	vij_1.gy*=k_vjm;	
-	cij_1 = gd_cij(robot1.heading,temp1_x,temp1_y);
-	//std::cout<<"using vijMORE"<<std::endl;	
+		
 
-	}
-	total.gx = 3*kv*vij_1.gx+kc*cij_1.gx;
-	total.gy = 3*kv*vij_1.gy+kc*cij_1.gy;
-
-
-
-std::cout<<"cij_1(x)="<<cij_1.gx<<std::endl;
-std::cout<<"cij_1(Y)="<<cij_1.gy<<std::endl;
-std::cout<<"vij_1(x)="<<vij_1.gx<<std::endl;
-std::cout<<"vij_1(Y)="<<vij_1.gy<<std::endl;
-
+	return return_grad_;
 }
 
-if((robot2.find_left == 1) || (robot2.find_right == 1))
-{	
-	float temp2_x,temp2_y;
-	l2g_rotation(robot2.distancex,robot2.distancey, head_self,temp2_x,temp2_y);
-   
-	  // for the rotation the posion of the robot from local to global
-	grad vij_2={};grad cij_2={};
-	float norm2_R,norm2_D;
-	// the variable for norm_R calculateed by robot(defined in class)
-	norm2_R = temp2_x*temp2_x+temp2_y*temp2_y;
-	// the variable defined inside the function	
-	norm2_D = designed.desire_2x*designed.desire_2x+designed.desire_2y*designed.desire_2y;
 
-	if(norm2_R<norm2_D){
-	vij_2=gd_vijless(designed.desire_2x,designed.desire_2y,temp2_x,temp2_y);
-	cij_2=gd_cij(robot2.heading,temp2_x,temp2_y);
+
+
+gradient::grad gradient::total_gradient(float kv_,float kc_,float threshold_,float RS_,float k_vjm_){
+
+	grad temp;
+	grad total ={0,0};
+
+	printf("robot1.find_left = %d , robot1.find_right= %d \n",robots[0].find_left,robots[0].find_right);
+
 	
+	for(int i=0;i<(m_total_num-1);i++){
+	// can change to operator overload
+	temp.gx=0;
+	temp.gy=0;
+	temp = gd_add(i,kv_,kc_,threshold_,RS_,k_vjm_);
+	total.gx += temp.gx;
+	total.gy += temp.gy;	
+
 	}
 
-	else{
-	vij_2=gd_vijmore(designed.desire_2x,designed.desire_2y,temp2_x,temp2_y,RS);
-	vij_2.gx*=k_vjm;
-	vij_2.gy*=k_vjm;	
-	cij_2=gd_cij(robot2.heading,temp2_x,temp2_y);
-	std::cout<<"vij_22(x)="<<vij_2.gx<<std::endl;
-	}
 
-	total.gx += 0.2*kv*vij_2.gx+kc*cij_2.gx;
-	total.gy += 0.2*kv*vij_2.gy+kc*cij_2.gy;
-
-	std::cout<<"cij_2(x)="<<cij_2.gx<<std::endl;
-	std::cout<<"cij_2(Y)="<<cij_2.gy<<std::endl;
-	std::cout<<"vij_2(x)="<<vij_2.gx<<std::endl;
-	std::cout<<"vij_2(Y)="<<vij_2.gy<<std::endl;
-//std::cout<<"norm_Real = "<<norm2_R<<"norm_Design="<<norm2_D<<std::endl;
-
-}
 	
-	if (std::sqrt(total.gx*total.gx+total.gy*total.gy)<= threshold)
+	if (std::sqrt(total.gx*total.gx+total.gy*total.gy)<= threshold_)
 	{
 		total.gx = 0;
 		total.gy = 0;

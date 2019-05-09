@@ -4,10 +4,11 @@
    <include file="$(find base_com)/launch/bringup.launch"/>
    <include file="$(find phidgets_imu)/launch/imu_angler.launch"/>
 
-   <param name="/robot1_ip" type="str" value="192.168.1.125" />
+   <param name="/robot1_ip" type="str" value="192.168.1.12" />
    <param name="/robot2_ip" type="str" value="192.168.1.147" />
    <param name="/robot3_ip" type="str" value="192.168.1.134" />
-   <param name="/local_ip" type="str"  value="192.168.1.125" />
+   <param name="/robot4_ip" type="str" value="192.168.1.125" />
+   <param name="/local_ip"  type="str" value="192.168.1.125" />
    <param name="/laptop_ip" type="str" value="192.168.1.127" />
 
    
@@ -20,6 +21,11 @@
 
    <node pkg="path_calculate" name = "cmd_pub" type ="path_opt" output="screen" >
    <remap from="/robot3/cmd" to="/cmd_vel"/>
+
+   <!--> Defined how many robot used in the formation and the lable number of local robot<-->
+   <param name="/total_robotn" type="int" value="4"/>
+   <param name="/this_robotn" type="int" value="4"/>
+
    <param name="/desired_h" type="double" value="0"/>     
    <!--> UNIT FOR heading rad, volecity m/s  <-->
    <param name="/desired_v" type="double" value="0.12"/>     

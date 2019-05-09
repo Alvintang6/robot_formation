@@ -8,7 +8,7 @@ class Ctrl_bot:public gradient
 
 
 public:
- 
+ 	Ctrl_bot(int a,int b):gradient(a,b){}
  
 
 	struct speed{

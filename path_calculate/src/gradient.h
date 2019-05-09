@@ -7,10 +7,7 @@ class gradient: public Poseback
 {
 public:
 
-
-
-//void show_gradient();  //function for testing
-
+	gradient(int a,int b):Poseback(a,b){}	
 
 	struct grad{
 		float gx;
@@ -18,27 +15,27 @@ public:
 	};
 
 
-// this struct should be init in (main class or pass from outside)
-	struct dsr_pos{
-		float desire_1x,desire_1y;
-		float desire_2x,desire_2y;
-	};
+	// this struct should be init in (main class or pass from outside)
+	typedef struct dsr_pos{
+	  float desire_x;
+	  float desire_y;
 
-dsr_pos designed;
+	}Dsr_pos;
 
-//the desired_x,y and distance is for each j robot
-//
+
+	//the desired_x,y and distance is for each j robot
+
+	std::vector<Dsr_pos> graph;
+
+
 
 	struct grad gd_vijless(float desire_x,float desire_y,float distancex, float distancey);
-
-	struct grad gd_vijmore(float desire_x,float desire_y,float distancex, float distancey,float coverage_Rs);
-
-// should using relative angle,(can using thetaj -thetai or get from qr code) 
+	struct grad gd_vijmore(float desire_x,float desire_y,float distancex, float distancey,float coverage_Rs); 
 	struct grad gd_cij(float heading, float disx, float disy);
+	struct grad gd_add(int buffer_i,float kv,float kc,float threshold, float RS,float k_vjm);
 
 
-
-	struct grad total_gradient(const struct dsr_pos &designed,float kv,float kc,float threshold, float RS,float k_vjm); 
+	struct grad total_gradient(float kv_,float kc_,float threshold_, float RS_,float k_vjm_); 
 
 	grad total;
 
