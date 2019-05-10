@@ -16,7 +16,7 @@
    <node pkg="path_calculate" name = "udp_recv" type ="udp_server" />
 
 
-   <node pkg="rosbag" type="record" name = "record_odom" args="-o $(find path_calculate)/bags/robot3 /odom" />
+   <node pkg="rosbag" type="record" name = "record_odom" args="-o $(find path_calculate)/bags/robot4 /odom" />
 
 
    <node pkg="path_calculate" name = "cmd_pub" type ="path_opt" output="screen" >
