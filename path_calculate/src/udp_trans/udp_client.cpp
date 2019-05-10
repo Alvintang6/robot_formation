@@ -11,7 +11,7 @@ void Udp_com::send_udp(int fd,struct sockaddr_in addr_to, struct ip_list ip )
 
 memcpy(&buf,&this->head_cback,sizeof(buf));
  
- 
+ addr_to.sin_addr.s_addr=inet_addr(ip.robot1);
  len=sendto(fd,buf,sizeof(buf),0,(struct sockaddr*)&addr_to,sizeof(addr_to)); 
  if(len==-1)
  {
@@ -31,18 +31,26 @@ memcpy(&buf,&this->head_cback,sizeof(buf));
  printf("send falure! for 3\n");
  }
 
- addr_to.sin_addr.s_addr=inet_addr(ip.laptop);
+ addr_to.sin_addr.s_addr=inet_addr(ip.robot4);
  len=sendto(fd,buf,sizeof(buf),0,(struct sockaddr*)&addr_to,sizeof(addr_to));
  if(len==-1)
  {
  printf("send falure! for 4\n");
- } 
-
- else
- {
- printf("%d bytes sended successfully! and it is %f.\n",len, head_cback);
-
  }
+
+// not use in this project(infomation back to laptop)
+ //addr_to.sin_addr.s_addr=inet_addr(ip.laptop);
+ //len=sendto(fd,buf,sizeof(buf),0,(struct sockaddr*)&addr_to,sizeof(addr_to));
+ //if(len==-1)
+ //{
+ //printf("send falure! for laptop\n");
+ //} 
+
+ //else
+ //{
+ //printf("%d bytes sended successfully! and it is %f.\n",len, head_cback);
+
+ //}
 
 
 }
@@ -57,7 +65,7 @@ void Udp_com::imu_CB(const sensor_msgs::Imu::ConstPtr& msg){
 	double roll,pitch,yaw;
 	m.getRPY(roll,pitch,yaw);
 	head_cback=yaw;
-printf("head calculated %f \n",head_cback);
+//printf("head calculated %f \n",head_cback);
 	
 //std::cout<< "roll =" << roll << "pitch = " << pitch << "yaw" << std::endl;
 

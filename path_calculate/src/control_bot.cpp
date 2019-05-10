@@ -80,11 +80,11 @@ else{
 
 }
 
-printf("robot1 position =%1.4f,%1.4f,robot2 position =%1.4f,%1.4f",robot1.distancex,robot1.distancey,robot2.distancex,robot2.distancey);
+//printf("robot1 position =%1.4f,%1.4f,robot2 position =%1.4f,%1.4f",robot[0].distancex,robot[0].distancey,robot[1].distancex,robot[1].distancey);
 std::cout<<"total.gx "<<total.gx<<"and total.gy"<<total.gy  <<std::endl;
 
-if (cmd.linear<0.05 && cmd.linear>-0.05)
-        cmd.linear=0;
+//if (cmd.linear<0.05 && cmd.linear>-0.05)
+        //cmd.linear=0;
 
 return cmd;
 

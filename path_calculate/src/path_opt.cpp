@@ -9,14 +9,15 @@
 int main(int argc, char **argv) {
 
 
-       float desired_v0,desired_h,motor_lim;  //where desired_h is offset value and should in radain uint
-       float k_vjm,kvij,kcij,k_rotate,threshold;
-       float RS;
-	bool test=0;
-
 	ros::init(argc, argv, "cam_pub");
-	Ctrl_bot obj; 
-        ros::param::get("~/desired_v",desired_v0);
+        float desired_v0,desired_h,motor_lim;  //where desired_h is offset value and should in radain uint
+	float k_vjm,kvij,kcij,k_rotate,threshold;
+	float RS;
+	int total_robotn;
+	int this_robotn;
+	bool test=0;
+	
+	ros::param::get("~/desired_v",desired_v0);
 	ros::param::get("~/desired_h",desired_h);
 	ros::param::get("~/motor_lim",motor_lim);
 	ros::param::get("~/k_vij",kvij);          // weight for cost function
@@ -25,24 +26,46 @@ int main(int argc, char **argv) {
         ros::param::get("~/coverage",RS);
 	ros::param::get("~/k_vjm",k_vjm);	// weight for cost function vij_more factor
 	ros::param::get("~/single_test", test);
-	ros::param::get("~/k_rotate", k_rotate);   // weight for angular velocity
+	ros::param::get("~/k_rotate", k_rotate);  
+	
+	ros::param::get("~/total_robotn", total_robotn);
+	ros::param::get("~/this_robotn", this_robotn);  
+	
+	Ctrl_bot robots(total_robotn,this_robotn); 
+	
+	Ctrl_bot::dsr_pos p1 = {-1.4,-0.3} ;
+	Ctrl_bot::dsr_pos p2 = {-0.7,0};
+	Ctrl_bot::dsr_pos p4 = {0.7,-0.3};
+	robots.graph.push_back(p1);
+	robots.graph.push_back(p2);
+	robots.graph.push_back(p4);
 
-	obj.designed={-0.8,0.3,-1.6,0};	// robot1,robot2 position
+
+	
+	
+         // weight for angular velocity
+
+		// struct in gradient robot1,robot2 position
+
+
  	ros::Rate rate(12);
    
 
  while(ros::ok()){
 
 
-  if(obj.pc_ctrl==1 || test==true){
-     geometry_msgs::Twist msg;    
-     obj.total= obj.total_gradient(obj.designed,kvij,kcij,threshold,RS,k_vjm);
-     obj.cmd = obj.vel_calculate(obj.total,motor_lim,desired_v0,desired_h,k_rotate); // (0,0)
+  if(robots.pc_ctrl==1 || test==true){
+     geometry_msgs::Twist msg;   
 
-     msg.linear.x = obj.cmd.linear; msg.angular.z=obj.cmd.angular;
-     printf("obj.cmd.linear= %f obj.cmd.angular=%f \n \n",obj.cmd.linear,obj.cmd.angular);
+	//the below part can imporve with object-oriented(all calculate in class,but i am lazy to change)
+  
+     robots.total= robots.total_gradient(kvij,kcij,threshold,RS,k_vjm);
+     robots.cmd = robots.vel_calculate(robots.total,motor_lim,desired_v0,desired_h,k_rotate); // (0,0)
 
-     obj.pub.publish(msg);   
+     msg.linear.x = robots.cmd.linear; msg.angular.z=robots.cmd.angular;
+     printf("obj.cmd.linear= %f obj.cmd.angular=%f \n \n",robots.cmd.linear,robots.cmd.angular);
+
+     robots.pub.publish(msg);   
    }
  rate.sleep();
  ros::spinOnce();
