@@ -8,7 +8,7 @@ class Ctrl_bot:public gradient
 
 
 public:
- 
+ 	Ctrl_bot(int a,int b):gradient(a,b){}
  
 
 	struct speed{
@@ -22,7 +22,7 @@ public:
 
 
 
-	struct speed vel_calculate(struct grad total,const float motor_lim, float v0,float desired_h,float k_rotate);
+	struct speed vel_calculate(struct grad total,const float motor_lim, float v0,float desired_h, float k_rotate);
 
 speed cmd;
 

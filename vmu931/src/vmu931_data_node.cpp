@@ -9,7 +9,7 @@
 
 void usage(char **argv);
 
-const int calib_simple=1500;
+const int calib_simple=700;
 const int calib_inital=300;
 const int DATA_SIZE=10; 
 //const int MAX_READS=1000;
@@ -144,7 +144,7 @@ while( ((ret=vmu_read_all(vmu, &data)) != VMU_ERROR))
 		        gyro_inital_y = gyro_temp_y;
 			gyro_inital_z = gyro_temp_z;
 	
-	  ROS_INFO("gyro calibrated with BIAS_Z %f",gyro_bias_z);
+	  ROS_WARN("gyro calibrated with BIAS_Z %f",gyro_bias_z);
 	}
 
 	if(gyro_count>calib_offset){

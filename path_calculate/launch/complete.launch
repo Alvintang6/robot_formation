@@ -4,36 +4,43 @@
    <include file="$(find base_com)/launch/bringup.launch"/>
 
 
-   <param name="/robot1_ip" type="str" value="192.168.1.125" />
+   <node pkg="vmu931" name = "vmu931" type ="vmu931_node" output="screen" >
+   <param name="/port" type="str" value="/dev/ttyACM0"/>
+   </node>
+
+   <param name="/robot1_ip" type="str" value="192.168.1.126" />
    <param name="/robot2_ip" type="str" value="192.168.1.147" />
-   <param name="/robot3_ip" type="str" value="192.168.1.134" />
-   <param name="/local_ip" type="str" value="192.168.1.147"/>
+   <param name="/robot3_ip" type="str" value="192.168.1.135" />
+   <param name="/robot4_ip" type="str" value="192.168.1.125" />
+   <param name="/local_ip"  type="str" value="192.168.1.147" />
    <param name="/laptop_ip" type="str" value="192.168.1.127" />
 
    
    <node pkg="path_calculate" name = "udp_send" type ="udp_client" />
    <node pkg="path_calculate" name = "udp_recv" type ="udp_server" />
-   
 
-   <node pkg="vmu931" name = "vmu931" type ="vmu931_node" output="screen" >
-   <param name="/port" type="str" value="/dev/ttyACM0"/>
-   </node>
-   
-   <node pkg="rosbag" type="record" name = "record_odom" args="-o $(find path_calculate)/bags/robot2 /odom" />
-  
+
+   <node pkg="rosbag" type="record" name = "record_odom" args="-o $(find path_calculate)/bags/robot3 /odom" />
+
+
    <node pkg="path_calculate" name = "cmd_pub" type ="path_opt" output="screen" >
    <remap from="/robot3/cmd" to="/cmd_vel"/>
+
+   <!--> Defined how many robot used in the formation and the lable number of local robot<-->
+   <param name="/total_robotn" type="int" value="4"/>
+   <param name="/this_robotn" type="int" value="4"/>
+
    <param name="/desired_h" type="double" value="0"/>     
    <!--> UNIT FOR heading rad, volecity m/s  <-->
    <param name="/desired_v" type="double" value="0.12"/>     
    <param name="/motor_lim" type="double" value="0.12"/>
-   <param name="/k_rotate" type="double" value="30"/>
-   <param name="/k_vjm" type="double" value="0.3"/>
-   <param name="/k_vij" type="double" value="0.1"/>
+   <param name="/k_vij" type="double" value="0.08"/>
    <param name="/k_cij" type="double" value="0.12"/>
+   <param name="/k_rotate" type="double" value="30"/>
+   <param name="/k_vjm" type="double" value="0.5"/>
    <param name="/coverage" type="double" value="3"/>
    <param name="/threshold_grd" type="double" value="0.03"/>
-   <param name="/single_test" type="bool" value="false"/>
+   <param name="/single_test" type="bool" value="true"/>
    </node>
 
 

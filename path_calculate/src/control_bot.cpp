@@ -23,8 +23,7 @@ struct speed cmd;
 	if(fabs(total.gx)<motor_lim && fabs(total.gy)<motor_lim){  //should have a motor lim per-defined . 	
 	
 	//Vx= total.gx+v0*sin(head_self-desired_h); Vy=total.gy+v0*cos(head_self-desired_h);
-	//float Vx, Vy;
-
+	float Vx, Vy;
 	//if(Vy > 0)
 	//{
 	
@@ -38,11 +37,9 @@ struct speed cmd;
 		//cmd.angular = Vx-std::sin((head_self-desired_h)/2);
 
 	//}
-	
+		
 		cmd.linear = v0-std::sqrt(total.gx*total.gx+total.gy*total.gy)*(Sign(total.gx*sin(head_self)-total.gy*cos(head_self)));
 		cmd.angular = k_rotate*v0*(-total.gx*sin((head_self+pi+desired_h)*0.5)+total.gy*cos((head_self+pi+desired_h)*0.5))-sin((head_self-desired_h)*0.5);
-		
-		
 
 
 }
@@ -58,12 +55,9 @@ else{
  	norm_x = total.gx/(temp_max/motor_lim);
  	norm_y = total.gy/(temp_max/motor_lim);
 
-
+		
 		cmd.linear = v0-std::sqrt(norm_x*norm_x+norm_y*norm_y)*(Sign(norm_x*sin(head_self)-norm_y*cos(head_self)));
 		cmd.angular = k_rotate*v0*(-norm_x*sin((head_self+pi+desired_h)*0.5)+norm_y*cos((head_self+pi+desired_h)*0.5))-sin((head_self-desired_h)*0.5);
-
-     
-
 
 
 
@@ -86,11 +80,11 @@ else{
 
 }
 
-printf("robot1 position =%1.4f,%1.4f,robot2 position =%1.4f,%1.4f",robot1.distancex,robot1.distancey,robot2.distancex,robot2.distancey);
+//printf("robot1 position =%1.4f,%1.4f,robot2 position =%1.4f,%1.4f",robot[0].distancex,robot[0].distancey,robot[1].distancex,robot[1].distancey);
 std::cout<<"total.gx "<<total.gx<<"and total.gy"<<total.gy  <<std::endl;
 
-if (cmd.linear<0.05 && cmd.linear>-0.05)
-	cmd.linear=0;
+//if (cmd.linear<0.05 && cmd.linear>-0.05)
+        //cmd.linear=0;
 
 return cmd;
 
