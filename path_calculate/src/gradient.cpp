@@ -150,7 +150,7 @@ gradient::grad gradient::gd_add(int buffer_i,float kv,float kc,float threshold, 
 		norm1_D = graph[buffer_i].desire_x*graph[buffer_i].desire_x+graph[buffer_i].desire_y*graph[buffer_i].desire_y;
 	
 	
-		std::cout<<"norm1_Real = "<<norm1_R<<"norm1_Design"<<norm1_D<<std::endl;
+		//std::cout<<"norm1_Real = "<<norm1_R<<"norm1_Design"<<norm1_D<<std::endl;
 
 	
 		if(norm1_R<norm1_D)
@@ -188,7 +188,7 @@ gradient::grad gradient::total_gradient(float kv_,float kc_,float threshold_,flo
 	grad temp;
 	grad total ={0,0};
 
-	printf("robot1.find_left = %d , robot1.find_right= %d \n",robots[0].find_left,robots[0].find_right);
+	//printf("robot1.find_left = %d , robot1.find_right= %d \n",robots[0].find_left,robots[0].find_right);
 
 	
 	for(int i=0;i<(m_total_num-1);i++){

@@ -2,23 +2,18 @@
 
    <param name="/robot1_ip" type="str" value="" />
    <param name="/robot2_ip" type="str" value="" />
-   <param name="/robot3_ip" type="str" value="192.168.1.134" />
+   <param name="/robot3_ip" type="str" value="192.168.1.15" />
+   <param name="/robot4_ip" type="str" value="192.168.1.125" />
+   <param name="/local_ip"  type="str" value="192.168.1.125" />
    <param name="/laptop_ip" type="str" value="192.168.1.128" />
 
-   <node pkg="path_calculate" name = "udp_recv" type ="udp_server" />
+   <node pkg="path_calculate" name = "udp_recv" type ="udp_server" output = "screen"/>
    
    <node pkg="path_calculate" name = "udp_send" type ="udp_client" />
    
 
 
 
-   <node pkg="path_calculate" name = "cmd_pub" type ="path_opt" output="screen" >
-   <param name="/desired_h" type="double" value="0.5"/>     <!-->UNIT FOR heading rad, volecity m/s  <-->
-   <param name="/desired_v0" type="double" value="0"/>     
-   <param name="/motor_lim" type="double" value="0.5"/>
-   <param name="/k_vij" type="double" value="0.3"/>
-   <param name="/k_cij" type="double" value="0.1"/>
-   </node>
 
 
 
