@@ -111,9 +111,9 @@ while(nh.ok())
 			ros::Time current_time = ros::Time::now();
 			g_imu_dt = (current_time - g_last_imu_time).toSec();
 			g_last_imu_time = current_time;
-			theta_x = theta_x + (g_imu_x-gyro_bias_x)*g_imu_dt;
-			theta_y = theta_y + (g_imu_y-gyro_bias_y)*g_imu_dt;
-			theta_z = theta_z + (g_imu_z-gyro_bias_z)*g_imu_dt;
+			theta_x = theta_x - (g_imu_x-gyro_bias_x)*g_imu_dt;
+			theta_y = theta_y - (g_imu_y-gyro_bias_y)*g_imu_dt;
+			theta_z = theta_z - (g_imu_z-gyro_bias_z)*g_imu_dt;
 		
 	tf::Quaternion temp;
 		temp.setRPY(theta_x,theta_y,theta_z); 

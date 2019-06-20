@@ -33,14 +33,19 @@ int main(int argc, char **argv) {
 	
 	Ctrl_bot robots(total_robotn,this_robotn); 
 	
-	Ctrl_bot::dsr_pos p1 = {-2.1,0} ;
-	Ctrl_bot::dsr_pos p2 = {-1.4,0.3};
-	Ctrl_bot::dsr_pos p3 = {-0.7,0.3};
+	//Ctrl_bot::dsr_pos p1 = {-2.1,0} ;
+	//Ctrl_bot::dsr_pos p2 = {-1.4,0.3};
+	//Ctrl_bot::dsr_pos p3 = {-0.7,0.3};
+	//robots.graph.push_back(p1);
+	//robots.graph.push_back(p2);
+	//robots.graph.push_back(p3);
+
+	Ctrl_bot::dsr_pos p1 = {-1.8,-0.5} ;
+	Ctrl_bot::dsr_pos p2 = {-1.2,0.0};
+	Ctrl_bot::dsr_pos p3 = {-0.6,-0.5};
 	robots.graph.push_back(p1);
 	robots.graph.push_back(p2);
 	robots.graph.push_back(p3);
-
-
 	
 	
          // weight for angular velocity

@@ -137,7 +137,9 @@ gradient::grad gradient::gd_add(int buffer_i,float kv,float kc,float threshold, 
 	{	
 		float temp1_x,temp1_y;
 
- 		std::cout<<"robot1.markerID"<<robots[0].info_marker<<std::endl;
+ 		std::cout<<"robots "<<labels[buffer_i]<<"found"<<std::endl;
+		std::cout<<"local position x ="<<robots[buffer_i].distancex<<std::endl;
+		std::cout<<"local position y ="<<robots[buffer_i].distancey<<std::endl;
 		// for the rotation the posion of the robot from local to global
 		l2g_rotation(robots[buffer_i].distancex,robots[buffer_i].distancey, head_self,temp1_x,temp1_y); 
 		std::cout<<"heading_rotate"<<57.2974*head_self<<"robot1.x-globle"<<temp1_x<<"robot1.y-goble"<<temp1_y<<std::endl;
