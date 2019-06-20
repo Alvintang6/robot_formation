@@ -10,15 +10,19 @@ int main(int argc, char **argv) {
 
 
 	ros::init(argc, argv, "cam_pub");
-        float desired_v0,desired_h,motor_lim;  //where desired_h is offset value and should in radain uint
+        float desired_v0,motor_lim;  //where desired_h is offset value and should in radain uint
+	float desired_h = 0;
+	float desired_h2;
 	float k_vjm,kvij,kcij,k_rotate,threshold;
 	float RS;
+	
 	int total_robotn;
 	int this_robotn;
 	bool test=0;
-	
+	bool chang_graph = true;
+
 	ros::param::get("~/desired_v",desired_v0);
-	ros::param::get("~/desired_h",desired_h);
+	ros::param::get("~/desired_h",desired_h2); // changed desired heading in running
 	ros::param::get("~/motor_lim",motor_lim);
 	ros::param::get("~/k_vij",kvij);          // weight for cost function
 	ros::param::get("~/k_cij",kcij);          // weight for cost function
@@ -33,13 +37,19 @@ int main(int argc, char **argv) {
 	
 	Ctrl_bot robots(total_robotn,this_robotn); 
 	
-	Ctrl_bot::dsr_pos p1 = {-1.4,-0.3} ;
-	Ctrl_bot::dsr_pos p2 = {-0.7,0};
-	Ctrl_bot::dsr_pos p4 = {0.7,-0.3};
+	//Ctrl_bot::dsr_pos p1 = {-1.4,-0.4} ;
+	//Ctrl_bot::dsr_pos p2 = {-0.7,0.0};
+	//Ctrl_bot::dsr_pos p4 = {0.7,-0.4};
+	//robots.graph.push_back(p1);
+	//robots.graph.push_back(p2);
+	//robots.graph.push_back(p4);
+
+	Ctrl_bot::dsr_pos p1 = {-1.2,0.0} ;
+	Ctrl_bot::dsr_pos p2 = {-0.6,0.5};
+	Ctrl_bot::dsr_pos p4 = {0.6,0.5};
 	robots.graph.push_back(p1);
 	robots.graph.push_back(p2);
 	robots.graph.push_back(p4);
-
 
 	
 	
@@ -54,8 +64,14 @@ int main(int argc, char **argv) {
  while(ros::ok()){
 
 
-  if(robots.pc_ctrl==1 || test==true){
+  if(robots.pc_ctrl==1 || robots.pc_ctrl==2 || test==true){
      geometry_msgs::Twist msg;   
+
+	//change the graph shape
+	if(robots.pc_ctrl==2 && chang_graph == true){
+	desired_h = desired_h2;
+	chang_graph == false;
+	}
 
 	//the below part can imporve with object-oriented(all calculate in class,but i am lazy to change)
   

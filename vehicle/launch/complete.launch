@@ -18,11 +18,9 @@
    <node pkg="path_calculate" name = "udp_send" type ="udp_client" />
    <node pkg="path_calculate" name = "udp_recv" type ="udp_server" />
 
+   <node pkg="rosbag" type="record" name = "record_position" args="-o $(find vehicle)/bags/robot3 /robot4/position" />
 
-   <node pkg="rosbag" type="record" name = "record_odom" args="-o $(find path_calculate)/bags/robot3 /odom" />
-
-
-   <node pkg="path_calculate" name = "cmd_pub" type ="path_opt" output="screen" >
+   <node pkg="vehicle" name = "log_dis" type ="log_dis" output="screen" >
    <remap from="/robot3/cmd" to="/cmd_vel"/>
 
    <!--> Defined how many robot used in the formation and the lable number of local robot<-->
@@ -39,7 +37,7 @@
    <param name="/k_vjm" type="double" value="0.5"/>
    <param name="/coverage" type="double" value="4"/>
    <param name="/threshold_grd" type="double" value="0.1"/>
-   <param name="/single_test" type="bool" value="false"/>
+   <param name="/single_test" type="bool" value="true"/>
    </node>
 
 

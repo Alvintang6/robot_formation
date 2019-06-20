@@ -8,10 +8,11 @@
 
 
 
-void gradient::l2g_rotation(const float &x,const float & y, float heading_self, float &rt_x,float &rt_y){
+void gradient::l2g_rotation(const float &x,const float & y,const float & heading, float heading_self, float &rt_x,float &rt_y,float & rt_h){
 
 	rt_x = x*cos(heading_self)-y*sin(heading_self);
-	rt_y = sin(heading_self)*x+cos(heading_self)*y;	
+	rt_y = sin(heading_self)*x+cos(heading_self)*y;
+	rt_h = heading_self + heading;	
 
 
 }
@@ -135,11 +136,13 @@ gradient::grad gradient::gd_add(int buffer_i,float kv,float kc,float threshold, 
 
 	if((robots[buffer_i].find_left == 1) ||(robots[buffer_i].find_right == 1) )
 	{	
-		float temp1_x,temp1_y;
+
+   		// temp_x & temp_y save the relative globel position between roboti&j
+		float temp1_x,temp1_y,temp_heading;
 
  		std::cout<<"robot1.markerID"<<robots[0].info_marker<<std::endl;
 		// for the rotation the posion of the robot from local to global
-		l2g_rotation(robots[buffer_i].distancex,robots[buffer_i].distancey, head_self,temp1_x,temp1_y); 
+		l2g_rotation(robots[buffer_i].distancex,robots[buffer_i].distancey,robots[buffer_i].heading, head_self,temp1_x,temp1_y,temp_heading); 
 		std::cout<<"heading_rotate"<<57.2974*head_self<<"robot1.x-globle"<<temp1_x<<"robot1.y-goble"<<temp1_y<<std::endl;
 		grad vij_={};grad cij_={};
 		float norm1_R,norm1_D;

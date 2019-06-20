@@ -65,6 +65,9 @@ void Udp_com::imu_CB(const sensor_msgs::Imu::ConstPtr& msg){
 	double roll,pitch,yaw;
 	m.getRPY(roll,pitch,yaw);
 	head_cback=yaw;
+//printf("head calculated %f \n",head_cback);
+	
+//std::cout<< "roll =" << roll << "pitch = " << pitch << "yaw" << std::endl;
 
 }
 
