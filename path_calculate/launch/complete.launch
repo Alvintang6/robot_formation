@@ -7,12 +7,12 @@
    <param name="/port" type="str" value="/dev/ttyACM0"/>
    </node>
 
-   <param name="/robot1_ip" type="str" value="192.168.1.128" />
+   <param name="/robot1_ip" type="str" value="192.168.1.129" />
    <param name="/robot2_ip" type="str" value="192.168.1.147" />
    <param name="/robot3_ip" type="str" value="192.168.1.135" />
    <param name="/robot4_ip" type="str" value="192.168.1.125" />
    <param name="/local_ip"  type="str" value="192.168.1.135" />
-   <param name="/laptop_ip" type="str" value="192.168.1.127" />
+   <param name="/laptop_ip" type="str" value="192.168.1.128" />
 
    
    <node pkg="path_calculate" name = "udp_send" type ="udp_client" />
@@ -38,7 +38,7 @@
    <param name="/k_rotate" type="double" value="8"/>
    <param name="/k_vjm" type="double" value="0.5"/>
    <param name="/coverage" type="double" value="4"/>
-   <param name="/threshold_grd" type="double" value="0.1"/>
+   <param name="/threshold_grd" type="double" value="0.122"/>
    <param name="/single_test" type="bool" value="false"/>
    </node>
 

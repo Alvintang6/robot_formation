@@ -12,6 +12,7 @@ void gradient::l2g_rotation(const float &x,const float & y,const float & heading
 
 	rt_x = x*cos(heading_self)-y*sin(heading_self);
 	rt_y = sin(heading_self)*x+cos(heading_self)*y;
+	rt_h = heading;
 	rt_h = heading_self + heading;	
 
 

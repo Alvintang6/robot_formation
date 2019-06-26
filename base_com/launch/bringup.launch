@@ -1,6 +1,6 @@
 <launch>
   <!--serial communication between arduino and pc via usb /-->
-  <node name="arduino_serial_node" pkg="rosserial_python" type="serial_node.py" output="screen">
+  <node name="arduino_serial_node" pkg="rosserial_python" type="serial_node.py" >
     <param name="port" value="/dev/ttyUSB0" />
     <param name="baud" value="57600" />
   </node>
@@ -20,10 +20,12 @@
      <param name="world_frame" value="enu" />
   </node>
 
--->
 
-  <node name="base_com" pkg="base_com" type="base_com_node">
+-->
+  <node name="base_com" pkg="base_com" type="base_com_node" output="screen" >
     <param name="angular_scale" type="double" value="0.85" />
     <param name="linear_scale" type="double" value="1.0" />
   </node>
+
+
 </launch>

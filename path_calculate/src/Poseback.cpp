@@ -107,7 +107,7 @@ tf::Quaternion q(req.markers[i].pose.pose.orientation.x, req.markers[i].pose.pos
       m.getRPY(roll, pitch, yaw);
 
         temp_angle = (*pf)(rob,pitch,req.markers[i].pose.pose.position.x, req.markers[i].pose.pose.position.z);
-	rob.heading = temp_angle+pi/2;
+	rob.heading = temp_angle+pi;
 	//computing yaw angle i robot coordination (should be modified when pitch < 0)
 	
 	
@@ -204,7 +204,7 @@ void Poseback::pose_getrightCB(const ar_track_alvar_msgs::AlvarMarkers &msg) {
 	void Poseback::udp_info(const path_calculate::heading &msg) 
 {
  	 head_self=msg.robot3;
-  	//robots[0].heading=msg.robot1;
+          //robots[0].heading=msg.robot1;
   	//robots[1].heading=msg.robot2; 
 	//robots[2].heading=msg.robot4;
   	pc_ctrl=msg.laptop;
