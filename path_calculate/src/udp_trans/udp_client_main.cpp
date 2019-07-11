@@ -19,11 +19,12 @@ int main(int argc, char **argv)
 
 
 // import the ip configure from the launch file
-  std::string bot1_ip,bot2_ip,bot3_ip,laptop_ip;
+  std::string bot1_ip,bot2_ip,bot3_ip,bot4_ip,laptop_ip;
 
   ros::param::get("/robot1_ip",bot1_ip);
   ros::param::get("/robot2_ip",bot2_ip);
   ros::param::get("/robot3_ip",bot3_ip);
+  ros::param::get("/robot4_ip",bot4_ip);
   ros::param::get("/laptop_ip",laptop_ip);
   
   ip_list ip;    // initial the ip struct for futher use
@@ -31,9 +32,9 @@ int main(int argc, char **argv)
 strcpy(ip.robot1,bot1_ip.c_str());
 strcpy(ip.robot2,bot2_ip.c_str());
 strcpy(ip.robot3,bot3_ip.c_str());
+strcpy(ip.robot4,bot4_ip.c_str());
 strcpy(ip.laptop,laptop_ip.c_str());
 
-printf("robot3_ip=%s \n", ip.robot3);
 
 
 int fd=socket(AF_INET,SOCK_DGRAM,0);

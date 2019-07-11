@@ -21,6 +21,7 @@ struct info_recv{
 	float robot1;
 	float robot2;
 	float robot3;
+	float robot4;
 	int laptop;
 };
 
@@ -30,6 +31,7 @@ struct arg_pass{
 	char robot1[14];
  	char robot2[14];
 	char robot3[14];
+	char robot4[14];
 	char laptop[14];
 	int fd; 
 
@@ -53,7 +55,7 @@ void* recv_thread(void *arg){
   {
 	
  	r=recvfrom(arg_inside.fd,buf,sizeof(buf),0,(struct sockaddr*)&from,&len);
-printf("in while r=%d, addr%s \n",r,inet_ntoa(from.sin_addr));
+ //(debug)// printf("in while r=%d, addr%s \n",r,inet_ntoa(from.sin_addr));
 	
      if(r>0)
      { 
@@ -71,13 +73,17 @@ printf("in while r=%d, addr%s \n",r,inet_ntoa(from.sin_addr));
 	{
 	  memcpy(&udp_info.robot3,buf,sizeof(float));
 	}
+	else if(strcmp(ip,arg_inside.robot4)==0)
+	{
+	  memcpy(&udp_info.robot4,buf,sizeof(float));
+	}
 	else if(strcmp(ip,arg_inside.laptop)==0)
 	{
 	  memcpy(&udp_info.laptop,buf,sizeof(int));
 	}
 	else{continue;}
 
- 	printf("The message received for %s is :ip1:%f,ip2:%f,ip3:%f,laptop:%d \n",inet_ntoa(from.sin_addr),udp_info.robot1,udp_info.robot2,udp_info.robot3,udp_info.laptop);
+ 	//(debug)// printf("The message received for %s is :ip1:%f,ip2:%f,ip3:%f,laptop:%d \n",inet_ntoa(from.sin_addr),udp_info.robot1,udp_info.robot2,udp_info.robot3,udp_info.laptop);
      } 
      else
      {
@@ -121,8 +127,6 @@ ros::Publisher pub = nh.advertise<path_calculate::heading>("/cross_info",1000);
  //perror("socket create error!\n");
  //exit(-1);
  //}
-
-
  std::string local_ip1;
  char local_ip[14];
  ros::param::get("/local_ip",local_ip1);
@@ -146,11 +150,12 @@ ros::Publisher pub = nh.advertise<path_calculate::heading>("/cross_info",1000);
 ("Bind successfully.\n");
  
 
-std::string bot1_ip,bot2_ip,bot3_ip,laptop_ip;
+std::string bot1_ip,bot2_ip,bot3_ip,bot4_ip,laptop_ip;
 
 ros::param::get("/robot1_ip",bot1_ip);
 ros::param::get("/robot2_ip",bot2_ip);
 ros::param::get("/robot3_ip",bot3_ip);
+ros::param::get("/robot4_ip",bot4_ip);
 ros::param::get("/laptop_ip",laptop_ip);
 
 	
@@ -160,6 +165,7 @@ arg_pass arg_udpthread;  // SET IP for different robot
 strcpy(arg_udpthread.robot1,bot1_ip.c_str());
 strcpy(arg_udpthread.robot2,bot2_ip.c_str());
 strcpy(arg_udpthread.robot3,bot3_ip.c_str());
+strcpy(arg_udpthread.robot4,bot4_ip.c_str());
 strcpy(arg_udpthread.laptop,laptop_ip.c_str());
 arg_udpthread.fd=udp_fd;
 
@@ -185,8 +191,12 @@ printf("robot3_ip=%s \n", arg_udpthread.robot3);
     path_calculate::heading msg;
     
 	//if(udp_info.robot3 != NULL )
-    {msg.robot1 = udp_info.robot1; msg.robot2= udp_info.robot2; 
-    msg.robot3 = udp_info.robot3; msg.laptop= udp_info.laptop;
+    {
+	msg.robot1 = udp_info.robot1; 
+	msg.robot2= udp_info.robot2; 
+	msg.robot3 = udp_info.robot3; 
+	msg.robot4=udp_info.robot4;
+	msg.laptop= udp_info.laptop;
    
 
     pub.publish(msg);

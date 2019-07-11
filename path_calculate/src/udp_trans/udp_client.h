@@ -14,6 +14,7 @@ struct ip_list{
 	 char robot1[14];
  	 char robot2[14];
 	 char robot3[14];
+	 char robot4[14];
 	 char laptop[14];
 
 	};
