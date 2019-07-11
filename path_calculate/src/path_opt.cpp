@@ -4,6 +4,12 @@
 #include <ar_track_alvar_msgs/AlvarMarkers.h>
 #include "control_bot.h"
 #include <geometry_msgs/Twist.h>
+float angbound(float ang_velocity,float limitation){
+	    if(ang_velocity>limitation)
+		return limitation;
+	    else 
+		return ang_velocity;
+        }
 
 
 int main(int argc, char **argv) {
@@ -15,6 +21,7 @@ int main(int argc, char **argv) {
 	float desired_h2;
 	float k_vjm,kvij,kcij,k_rotate,threshold;
 	float RS;
+	float ang_lim;
 	
 	int total_robotn;
 	int this_robotn;
@@ -31,6 +38,7 @@ int main(int argc, char **argv) {
 	ros::param::get("~/k_vjm",k_vjm);	// weight for cost function vij_more factor
 	ros::param::get("~/single_test", test);
 	ros::param::get("~/k_rotate", k_rotate);  
+	ros::param::get("~/ang_lim", ang_lim);
 	
 	ros::param::get("~/total_robotn", total_robotn);
 	ros::param::get("~/this_robotn", this_robotn);  
@@ -78,7 +86,8 @@ int main(int argc, char **argv) {
      robots.total= robots.total_gradient(kvij,kcij,threshold,RS,k_vjm);
      robots.cmd = robots.vel_calculate(robots.total,motor_lim,desired_v0,desired_h,k_rotate); // (0,0)
 
-     msg.linear.x = robots.cmd.linear; msg.angular.z=robots.cmd.angular;
+     msg.linear.x = robots.cmd.linear;
+     msg.angular.z=angbound(robots.cmd.angular,ang_lim);
      printf("obj.cmd.linear= %f obj.cmd.angular=%f \n \n",robots.cmd.linear,robots.cmd.angular);
 
      robots.pub.publish(msg);   
