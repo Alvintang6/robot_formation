@@ -36,7 +36,8 @@ class Poseback{
 
 	std::vector<int> labels;       // save robots label number
 	std::vector<ROBOT> robots;     // save robots infomation
-	//struct robot robot1,robot2;
+	
+	// label and total num in the class
 	int m_label_num;
 	int m_total_num;
 
@@ -56,13 +57,14 @@ class Poseback{
 	//int count_2;
 
 
-	void pose_solve(int rob_num,int i, struct robot &rob,const ar_track_alvar_msgs::AlvarMarkers &req, void (*pf)(struct robot &rob,float x,float y,int i)); // function for pose analysis, input: robot#,ar_pose,tf_matraix,output: bool for robot detection
+	void pose_solve(int rob_num,int i, struct robot &rob,const ar_track_alvar_msgs::AlvarMarkers &req, float (*pf)(struct robot &rob,double heading,float x,float y)); // function for pose analysis, input: robot#,ar_pose,tf_matraix,output: bool for robot detection
 
-	static void rotation_left(struct robot &rob, float x,float y, int i);  // rotation for left camera
-	static void rotation_right(struct robot &rob,float x, float y, int i); // rotation for right camera
+	static float rotation_left(struct robot &rob,double heading, float x,float y);  // rotation for left camera
+	static float rotation_right(struct robot &rob,double heading, float x, float y); // rotation for right camera
 	
 		
 	
 };
 
 #endif
+

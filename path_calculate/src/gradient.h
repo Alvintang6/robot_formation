@@ -42,7 +42,7 @@ public:
 
 private:
 
-	void l2g_rotation(const float & x,const float & y, float heading_self,float & rt_x, float & rt_y);
+	void l2g_rotation(const float & x,const float & y,const float & heading, float heading_self,float & rt_x, float & rt_y,float & rt_h);
 
 
 };
