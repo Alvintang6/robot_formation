@@ -1,0 +1,14 @@
+<launch>
+
+   <include file="$(find base_com)/launch/bringup.launch"/>
+   
+   <include file="$(find phidgets_imu)/launch/imu_angler.launch"/>
+
+
+   <node pkg="rosbag" type="record" name = "record_odom" args="-o $(find path_calculate)/bags/test_odom /odom" />
+
+
+   
+
+
+</launch>

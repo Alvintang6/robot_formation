@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <tf/tf.h>  
 #include "Poseback.h"
@@ -31,30 +30,32 @@
 
 ////left_cam callack with rotation matrix {cos-75 sin-75;-sin-75 cos-75 }={0.258 -0.965;0.965,0.258}
 ///{cos-65 sin-65;-sin-65 cos-65 }={0.4226 -0.9063;0.9063,0.4226}
-void Poseback::rotation_left(struct robot & rob, float x,float y,int i){
+float Poseback::rotation_left(struct robot & rob,double heading, float x,float y){
+	float relative_angle;	
 	x = 0.9727*x+0.0068*x*x-0.0305*y+0.011; y = 0.8536*y+0.0149*x-0.0294*x*x+0.0427;    // using lsqcurvefitting to conpensate camera
 	rob.distancex = 0.4226*x-0.9063*y;
 	rob.distancey = 0.9063*x+0.4226*y;
 	rob.find_left = 1;
-	rob.info_marker = i;
+	relative_angle = -heading + (65*0.0174532);
 }
 
 
 ////right_cam callback with the rotation matrix {cos75 sin75;-sin75 cos75}={0.258 0.965;-0.906 0.258}
 //{cos65 sin65;-sin65 cos65 }={0.4226 0.9063;-0.9063,0.4226}
-void Poseback::rotation_right(struct robot & rob, float x,float y,int i){
-	 x = 0.9834*x-0.0003*x*x-0.0428*y-0.0229;  y = 0.8429*y+0.0523*y*y-0.044*x+0.0932;  
+float Poseback::rotation_right(struct robot & rob,double heading, float x,float y){
+	float relative_angle;	
+	x = 0.9834*x-0.0003*x*x-0.0428*y-0.0229;  y = 0.8429*y+0.0523*y*y-0.044*x+0.0932;  
 	rob.distancex = 0.4226*x+0.9063*y;
 	rob.distancey = -0.9063*x+0.4226*y;
 	rob.find_right = 1;
-	rob.info_marker = i;
+	relative_angle = -heading - (65*0.0174532);
 }
 
 
 
-void Poseback::pose_solve(int rob_num,int i, struct robot & rob, const ar_track_alvar_msgs::AlvarMarkers &req, void (*pf)(struct robot &rob,float x,float y,int)){
+void Poseback::pose_solve(int rob_num,int i, struct robot & rob, const ar_track_alvar_msgs::AlvarMarkers &req, float (*pf)(struct robot &rob,double heading,float x,float y)){
 
-
+	float temp_angle; //temp relative angle between j & i
  	if(((req.markers[i].id-1)/4) == (rob_num-1)){
 		
 // check marker 1 find corrsponding 
@@ -64,8 +65,10 @@ void Poseback::pose_solve(int rob_num,int i, struct robot & rob, const ar_track_
       double roll, pitch, yaw;
       m.getRPY(roll, pitch, yaw);
 // return the pose of robot1
-      (*pf)(rob,req.markers[i].pose.pose.position.x, req.markers[i].pose.pose.position.z, req.markers[i].id);
-      //rob.heading = pitch*(-1) + 1.308 ; 
+      temp_angle = (*pf)(rob,pitch,req.markers[i].pose.pose.position.x, req.markers[i].pose.pose.position.z);
+      //benchmark for the marker 
+      rob.heading = temp_angle;
+  std::cout  <<"relative_heading"<< rob.heading*57.29<<"req.markerid"<<req.markers[i].id<< std::endl;
 	  }
 
 	   else if((req.markers[i].id%4) == 2){  //pitch + 1.570
@@ -75,9 +78,9 @@ tf::Quaternion q(req.markers[i].pose.pose.orientation.x, req.markers[i].pose.pos
       double roll, pitch, yaw;
       m.getRPY(roll, pitch, yaw);
        
-        (*pf)(rob,req.markers[i].pose.pose.position.x, req.markers[i].pose.pose.position.z, req.markers[i].id);
-	//computing yaw angle i robot coordination (should be modified when pitch < 0)
-	//rob.heading = pitch*(-1) + 1.308 + 1.570;
+        temp_angle = (*pf)(rob,pitch,req.markers[i].pose.pose.position.x, req.markers[i].pose.pose.position.z);
+	//computing yaw angle i robot coordination 
+	rob.heading = temp_angle+pi/2;
 	
 
 	  }
@@ -88,9 +91,10 @@ tf::Quaternion q(req.markers[i].pose.pose.orientation.x, req.markers[i].pose.pos
       double roll, pitch, yaw;
       m.getRPY(roll, pitch, yaw);
 
-        (*pf)(rob,req.markers[i].pose.pose.position.x, req.markers[i].pose.pose.position.z, req.markers[i].id);
+        temp_angle = (*pf)(rob,pitch,req.markers[i].pose.pose.position.x, req.markers[i].pose.pose.position.z);
 	//computing yaw angle i robot coordination (should be modified when pitch < 0)
-	//rob.heading = pitch*(-1) + 1.308 + 3.141;
+	rob.heading = temp_angle-pi/2;	
+	std::cout  <<"relative_heading"<< rob.heading*57.29<<"req.markerid"<<req.markers[i].id<< std::endl;
 	
 	  }
 	   else{ //pitch +3.141
@@ -101,10 +105,11 @@ tf::Quaternion q(req.markers[i].pose.pose.orientation.x, req.markers[i].pose.pos
       double roll, pitch, yaw;
       m.getRPY(roll, pitch, yaw);
 
-        (*pf)(rob,req.markers[i].pose.pose.position.x, req.markers[i].pose.pose.position.z, req.markers[i].id);
+        temp_angle = (*pf)(rob,pitch,req.markers[i].pose.pose.position.x, req.markers[i].pose.pose.position.z);
+	rob.heading = temp_angle+pi;
 	//computing yaw angle i robot coordination (should be modified when pitch < 0)
-	//rob.heading = pitch*(-1) + 1.308 + 3.141;
-
+	
+	
       
 	  }
 
@@ -198,13 +203,12 @@ void Poseback::pose_getrightCB(const ar_track_alvar_msgs::AlvarMarkers &msg) {
 	void Poseback::udp_info(const path_calculate::heading &msg) 
 {
  	 head_self=msg.robot4;
-  	robots[0].heading=msg.robot1;
-  	robots[1].heading=msg.robot2; 
-	robots[2].heading=msg.robot3;
+          //robots[0].heading=msg.robot1;
+  	//robots[1].heading=msg.robot2; 
+	//robots[2].heading=msg.robot3;
   	pc_ctrl=msg.laptop;
 	printf("pc_ctrl = %d", pc_ctrl);
 }
-
 
 
 
