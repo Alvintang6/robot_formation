@@ -5,13 +5,20 @@
 
 
 
-int Ctrl_bot::Sign(const float x){
-	if(x<0)
-	return -1;
-	else
-	return 1;
-}
+	int Ctrl_bot::Sign(const float x){
+		if(x<0)
+		return -1;
+		else
+		return 1;
+	}
 
+
+	Ctrl_bot::dsr_pos Ctrl_bot::graph_rotate(Ctrl_bot::dsr_pos position, float direction){
+		Ctrl_bot::dsr_pos for_return;		
+		 for_return.desire_x = position.desire_x*cos(direction)-position.desire_y*sin(direction);
+		 for_return.desire_y = position.desire_x*sin(direction)+position.desire_y*cos(direction);
+	return for_return;
+	}
 
 
 Ctrl_bot::speed Ctrl_bot::vel_calculate( const struct grad total,const float motor_lim, float v0, float desired_h,float k_rotate){

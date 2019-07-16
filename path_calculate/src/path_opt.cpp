@@ -69,6 +69,8 @@ int main(int argc, char **argv) {
  	ros::Rate rate(12);
    
 
+
+
  while(ros::ok()){
 
 
@@ -79,12 +81,15 @@ int main(int argc, char **argv) {
 	if(robots.pc_ctrl==2 && chang_graph == true){
 	desired_h = desired_h2;
 	chang_graph == false;
+	for(int i=0;i<(total_robotn-1);i++){
+		robots.graph[i] = robots.graph_rotate(robots.graph[i],desired_h);
+	} 
 	}
 
 	//the below part can imporve with object-oriented(all calculate in class,but i am lazy to change)
   
-     robots.total= robots.total_gradient(kvij,kcij,threshold,RS,k_vjm);
-     robots.cmd = robots.vel_calculate(robots.total,motor_lim,desired_v0,desired_h,k_rotate); // (0,0)
+     robots.total= robots.total_gradient(kvij,kcij,threshold,RS,k_vjm); // in the gradient class
+     robots.cmd = robots.vel_calculate(robots.total,motor_lim,desired_v0,desired_h,k_rotate); // in control class (0,0)
 
      msg.linear.x = robots.cmd.linear;
      msg.angular.z=angbound(robots.cmd.angular,ang_lim);
