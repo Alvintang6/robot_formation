@@ -29,19 +29,19 @@
    <param name="/total_robotn" type="int" value="4"/>
    <param name="/this_robotn" type="int" value="3"/>
 
-   <param name="/desired_h" type="double" value="0"/>     
+   <param name="/desired_h" type="double" value="0.7853"/>     
    <!--> UNIT FOR heading rad, volecity m/s  
  	ang_lim used for nonholonmic robots system
    <-->
    <param name="/desired_v" type="double" value="0.14"/> 
    <param name="/ang_lim" type="double" value="0.14"/>        
    <param name="/motor_lim" type="double" value="0.12"/>
-   <param name="/k_vij" type="double" value="0.08"/>
-   <param name="/k_cij" type="double" value="0.04"/>
+   <param name="/k_vij" type="double" value="0.24"/>
+   <param name="/k_cij" type="double" value="0.12"/>
    <param name="/k_rotate" type="double" value="8"/>
    <param name="/k_vjm" type="double" value="0.5"/>
    <param name="/coverage" type="double" value="4"/>
-   <param name="/threshold_grd" type="double" value="0.09"/>
+   <param name="/threshold_grd" type="double" value="0.05"/>
    <param name="/single_test" type="bool" value="false"/>
    </node>
 

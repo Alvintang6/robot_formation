@@ -80,7 +80,7 @@ int main(int argc, char **argv) {
 	//change the graph shape
 	if(robots.pc_ctrl==2 && chang_graph == true){
 	desired_h = desired_h2;
-	chang_graph == false;
+	chang_graph = false;
 	for(int i=0;i<(total_robotn-1);i++){
 		robots.graph[i] = robots.graph_rotate(robots.graph[i],desired_h);
 	} 

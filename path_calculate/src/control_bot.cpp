@@ -46,7 +46,7 @@ struct speed cmd;
 	//}
 		
 		cmd.linear = v0-std::sqrt(total.gx*total.gx+total.gy*total.gy)*(Sign(total.gx*sin(head_self)-total.gy*cos(head_self)));
-		cmd.angular = k_rotate*v0*(-total.gx*sin((head_self+pi+desired_h)*0.5)+total.gy*cos((head_self+pi+desired_h)*0.5))-sin((head_self-desired_h)*0.5);
+		cmd.angular = k_rotate*v0*(-total.gx*sin((head_self+pi-desired_h)*0.5)+total.gy*cos((head_self+pi-desired_h)*0.5))-sin((head_self-desired_h)*0.5);
 
 
 }
