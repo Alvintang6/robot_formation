@@ -5,12 +5,21 @@
 
 
 
-int Ctrl_bot::Sign(const float x){
-	if(x<0)
-	return -1;
-	else
-	return 1;
-}
+	int Ctrl_bot::Sign(const float x){
+		if(x<0)
+		return -1;
+		else
+		return 1;
+	}
+
+
+
+	Ctrl_bot::dsr_pos Ctrl_bot::graph_rotate(Ctrl_bot::dsr_pos position, float direction){
+		Ctrl_bot::dsr_pos for_return;		
+		 for_return.desire_x = position.desire_x*cos(direction)-position.desire_y*sin(direction);
+		 for_return.desire_y = position.desire_x*sin(direction)+position.desire_y*cos(direction);
+	return for_return;
+	}
 
 
 
@@ -39,7 +48,7 @@ struct speed cmd;
 	//}
 		
 		cmd.linear = v0-std::sqrt(total.gx*total.gx+total.gy*total.gy)*(Sign(total.gx*sin(head_self)-total.gy*cos(head_self)));
-		cmd.angular = k_rotate*v0*(-total.gx*sin((head_self+pi+desired_h)*0.5)+total.gy*cos((head_self+pi+desired_h)*0.5))-sin((head_self-desired_h)*0.5);
+		cmd.angular = k_rotate*v0*(-total.gx*sin((head_self+pi-desired_h)*0.5)+total.gy*cos((head_self+pi-desired_h)*0.5))-sin((head_self-desired_h)*0.5);
 
 
 }
@@ -57,7 +66,7 @@ else{
 
 		
 		cmd.linear = v0-std::sqrt(norm_x*norm_x+norm_y*norm_y)*(Sign(norm_x*sin(head_self)-norm_y*cos(head_self)));
-		cmd.angular = k_rotate*v0*(-norm_x*sin((head_self+pi+desired_h)*0.5)+norm_y*cos((head_self+pi+desired_h)*0.5))-sin((head_self-desired_h)*0.5);
+		cmd.angular = k_rotate*v0*(-norm_x*sin((head_self+pi-desired_h)*0.5)+norm_y*cos((head_self+pi-desired_h)*0.5))-sin((head_self-desired_h)*0.5);
 
 
 

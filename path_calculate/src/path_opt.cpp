@@ -38,7 +38,7 @@ int main(int argc, char **argv) {
 	ros::param::get("~/k_vjm",k_vjm);	// weight for cost function vij_more factor
 	ros::param::get("~/single_test", test);
 	ros::param::get("~/k_rotate", k_rotate);  
-	
+	ros::param::get("~/ang_lim",ang_lim);
 	ros::param::get("~/total_robotn", total_robotn);
 	ros::param::get("~/this_robotn", this_robotn);  
 	
@@ -77,7 +77,11 @@ int main(int argc, char **argv) {
 	//change the graph shape
 	if(robots.pc_ctrl==2 && chang_graph == true){
 	desired_h = desired_h2;
-	chang_graph == false;
+	chang_graph = false;
+	for(int i=0;i<(total_robotn-1);i++){
+		robots.graph[i] = robots.graph_rotate(robots.graph[i],desired_h);
+	 ROS_ERROR("x= %f,  y=%f ",robots.graph[i].desire_x,robots.graph[i].desire_y);	
+	} 
 	}
 
 	//the below part can imporve with object-oriented(all calculate in class,but i am lazy to change)

@@ -37,6 +37,7 @@ float Poseback::rotation_left(struct robot & rob,double heading, float x,float y
 	rob.distancey = 0.9063*x+0.4226*y;
 	rob.find_left = 1;
 	relative_angle = -heading + (65*0.0174532);
+	return relative_angle;
 }
 
 
@@ -49,6 +50,7 @@ float Poseback::rotation_right(struct robot & rob,double heading, float x,float 
 	rob.distancey = -0.9063*x+0.4226*y;
 	rob.find_right = 1;
 	relative_angle = -heading - (65*0.0174532);
+	return relative_angle;
 }
 
 
