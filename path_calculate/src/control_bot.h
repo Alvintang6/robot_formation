@@ -21,7 +21,7 @@ public:
 // the desired heading direction based on the begin angular offset
 
 
-
+	 struct dsr_pos	graph_rotate(struct dsr_pos position, float direction);
 	struct speed vel_calculate(struct grad total,const float motor_lim, float v0,float desired_h, float k_rotate);
 
 speed cmd;

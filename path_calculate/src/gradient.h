@@ -31,7 +31,7 @@ public:
 
 	struct grad gd_vijless(float desire_x,float desire_y,float distancex, float distancey);
 	struct grad gd_vijmore(float desire_x,float desire_y,float distancex, float distancey,float coverage_Rs); 
-	struct grad gd_cij(float heading, float disx, float disy);
+	struct grad gd_cij(float heading, float disx, float disy, float coverage_Rs);
 	struct grad gd_add(int buffer_i,float kv,float kc,float threshold, float RS,float k_vjm);
 
 
