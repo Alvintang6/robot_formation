@@ -4,7 +4,7 @@
 #define blind_a 40*pi/180
 #define bound 0.5  // bound for angle = 60 degree 
 #define pi 3.1415926
-
+#define trans_r 2
 
 
 
@@ -85,11 +85,12 @@ return vij;
 // bound should be = cos(thet_Er)
 //
 //////////////////
-gradient::grad gradient::gd_cij(float heading,float disx, float disy){
+gradient::grad gradient::gd_cij(float heading,float disx, float disy, float coverage_Rs){
 
 struct grad cij;
 
-
+float phi;
+float dis_ij;
 double cos_ij;
 double dd1_x,dd1_y, gd_x,gd_y;
 double H_cost,ddcos_xij,ddcos_yij;
@@ -112,6 +113,20 @@ d_rijx=(sin_heading/pow(((cos_heading*cos_heading + sin_heading*sin_heading)*(di
 
 
 d_rijy=-(cos_heading/pow(((cos_heading*cos_heading + sin_heading*sin_heading)*(disx*disx + disy*disy)),0.5) - (disy*(disy*cos_heading - disx*sin_heading)*(cos_heading*cos_heading + sin_heading*sin_heading))/pow(((cos_heading*cos_heading + sin_heading*sin_heading)*(disx*disx + disy*disy)),1.5))/(pow(1 - (disy*cos_heading - disx*sin_heading)*(disy*cos_heading - disx*sin_heading)/(((cos_heading*cos_heading + sin_heading*sin_heading)*(disx*disx + disy*disy))),0.5));
+
+dis_ij = std::sqrt(disx*disx+disy*disy);
+
+if(dis_ij<=trans_r)
+{ 	phi=1;  }
+
+else if (dis_ij>coverage_Rs)
+{ 	phi=0; }
+else
+{
+	phi=0.5*(1+cos(pi*((dis_ij-trans_r)/(coverage_Rs-trans_r))));
+
+}
+
 
 cij.gx=h_cos*d_rijx;
 cij.gy=h_cos*d_rijy;
@@ -161,7 +176,7 @@ gradient::grad gradient::gd_add(int buffer_i,float kv,float kc,float threshold, 
 		{
 			vij_=gd_vijless(graph[buffer_i].desire_x,graph[buffer_i].desire_y,temp1_x,temp1_y);
 			// cij should be modify
-			cij_=gd_cij(robots[buffer_i].heading,temp1_x,temp1_y);
+			cij_=gd_cij(robots[buffer_i].heading,temp1_x,temp1_y,RS);
 	
 			//std::cout<<"vij_1(x) outside"<<vij_1.gx<<vij_1.gy<<std::endl;
 			//std::cout<<"using vijless"<<std::endl;
@@ -171,7 +186,7 @@ gradient::grad gradient::gd_add(int buffer_i,float kv,float kc,float threshold, 
 			vij_=gd_vijmore(graph[buffer_i].desire_x, graph[buffer_i].desire_y,temp1_x,temp1_y, RS);
 			vij_.gx*=k_vjm;
 			vij_.gy*=k_vjm;	
-			cij_ = gd_cij(robots[buffer_i].heading,temp1_x,temp1_y);
+			cij_ = gd_cij(robots[buffer_i].heading,temp1_x,temp1_y,RS);
 			//std::cout<<"using vijMORE"<<std::endl;	
 
 		}

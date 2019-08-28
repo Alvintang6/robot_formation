@@ -22,13 +22,17 @@ int main(int argc, char **argv) {
 	float k_vjm,kvij,kcij,k_rotate,threshold;
 	float RS;
 	float ang_lim;
+	float v_second;
 	
 	int total_robotn;
 	int this_robotn;
 	bool test=0;
-	bool chang_graph = true;
+	bool change_pattern = true;
+	bool change_graph = true;
+	bool change_v = true;
 
 	ros::param::get("~/desired_v",desired_v0);
+	ros::param::get("~/v_second", v_second); 
 	ros::param::get("~/desired_h",desired_h2); // changed desired heading in running
 	ros::param::get("~/motor_lim",motor_lim);
 	ros::param::get("~/k_vij",kvij);          // weight for cost function
@@ -44,16 +48,15 @@ int main(int argc, char **argv) {
 	
 	Ctrl_bot robots(total_robotn,this_robotn); 
 	
-	  //Ctrl_bot::dsr_pos p1 = {-1.8,-0.5} ;
-        //Ctrl_bot::dsr_pos p2 = {-1.2,0.0};
-        //Ctrl_bot::dsr_pos p3 = {-0.6,-0.5};
-	//robots.graph.push_back(p1);
-	//robots.graph.push_back(p2);
-	//robots.graph.push_back(p3);
+	
 
-	Ctrl_bot::dsr_pos p1 = {-1.8,-0.5} ;
-	Ctrl_bot::dsr_pos p2 = {-1.2,0.0};
-	Ctrl_bot::dsr_pos p3 = {-0.6,-0.5};
+
+	Ctrl_bot::dsr_pos p1 = {-2.1,-0.4} ;
+	Ctrl_bot::dsr_pos p2 = {-1.4,0.0};
+	Ctrl_bot::dsr_pos p3 = {-0.7,-0.4};
+	Ctrl_bot::dsr_pos p1_2 = {-2.1,-0.0} ;
+	Ctrl_bot::dsr_pos p2_2 = {-1.4,0.4};
+	Ctrl_bot::dsr_pos p3_2 = {-0.7,0.4};
 	robots.graph.push_back(p1);
 	robots.graph.push_back(p2);
 	robots.graph.push_back(p3);
@@ -71,18 +74,32 @@ int main(int argc, char **argv) {
  while(ros::ok()){
 
 
-  if(robots.pc_ctrl==1 || robots.pc_ctrl==2 || test==true){
+  if(robots.pc_ctrl==1 || robots.pc_ctrl==2 ||robots.pc_ctrl==3 || robots.pc_ctrl==4 || test==true){
      geometry_msgs::Twist msg;   
 
 	//change the graph shape
-	if(robots.pc_ctrl==2 && chang_graph == true){
+	if(robots.pc_ctrl==2 && change_graph == true){
 	desired_h = desired_h2;
-	chang_graph = false;
+	change_graph = false;
 	for(int i=0;i<(total_robotn-1);i++){
 		robots.graph[i] = robots.graph_rotate(robots.graph[i],desired_h);
 	 ROS_ERROR("x= %f,  y=%f ",robots.graph[i].desire_x,robots.graph[i].desire_y);	
 	} 
 	}
+
+	
+	if(robots.pc_ctrl==4 && change_pattern == true){
+		change_pattern = false;
+		robots.graph[0] = p1_2; 
+		robots.graph[1] = p2_2; 
+		robots.graph[2] = p3_2;	
+	}
+
+	// pc_ctrl == 3 change velocity
+        if(robots.pc_ctrl==3 && change_v == true){
+        change_v = false;
+        desired_v0 = v_second;
+        }
 
 	//the below part can imporve with object-oriented(all calculate in class,but i am lazy to change)
   

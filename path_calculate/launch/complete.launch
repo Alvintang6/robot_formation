@@ -11,12 +11,12 @@
    <-->
    <include file="$(find phidgets_imu)/launch/imu_angler.launch"/>
 
-   <param name="/robot1_ip" type="str" value="192.168.1.129" />
-   <param name="/robot2_ip" type="str" value="192.168.1.147" />
-   <param name="/robot3_ip" type="str" value="192.168.1.135" />
-   <param name="/robot4_ip" type="str" value="192.168.1.125" />
-   <param name="/local_ip"  type="str" value="192.168.1.125" />
-   <param name="/laptop_ip" type="str" value="192.168.1.128" />
+   <param name="/robot1_ip" type="str" value="192.168.1.186" />
+   <param name="/robot2_ip" type="str" value="192.168.1.198" />
+   <param name="/robot3_ip" type="str" value="192.168.1.122" />
+   <param name="/robot4_ip" type="str" value="192.168.1.199" />
+   <param name="/local_ip"  type="str" value="192.168.1.199" />
+   <param name="/laptop_ip" type="str" value="192.168.1.152" />
 
    
    <node pkg="path_calculate" name = "udp_send" type ="udp_client" />
@@ -37,15 +37,16 @@
     <!--> UNIT FOR heading rad, volecity m/s  
  	ang_lim used for nonholonmic robots system
    <-->
-   <param name="/desired_v" type="double" value="0.14"/>  
-   <param name="/ang_lim" type="double" value="0.22"/>    
+   <param name="/desired_v" type="double" value="0.15"/>  
+   <param name="/v_second" type="double" value="0.45"/> 
+   <param name="/ang_lim" type="double" value="0.18"/>    
    <param name="/motor_lim" type="double" value="0.12"/>
-   <param name="/k_vij" type="double" value="0.24"/>
-   <param name="/k_cij" type="double" value="0.12"/>
-   <param name="/k_rotate" type="double" value="12"/>
-   <param name="/k_vjm" type="double" value="0.5"/>
+   <param name="/k_vij" type="double" value="0.08"/>
+   <param name="/k_cij" type="double" value="0.05"/>
+   <param name="/k_rotate" type="double" value="5"/>
+   <param name="/k_vjm" type="double" value="0.2"/>
    <param name="/coverage" type="double" value="4"/>
-   <param name="/threshold_grd" type="double" value="0.05"/>
+   <param name="/threshold_grd" type="double" value="0.02"/>
    <param name="/single_test" type="bool" value="false"/>
    </node>
 
