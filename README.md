@@ -2,7 +2,7 @@
 
 Its a project of my master thesis.
 
-![Robots env](test_env.JPG)
+<img src="http:..." width = "200" height = "100" div align="center" />[Robots env](test_env.JPG)
 ## Overall 
 
 The robots should form a designed formation pattern when moving with a desired direction and velocity,
