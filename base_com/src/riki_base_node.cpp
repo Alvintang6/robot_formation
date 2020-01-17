@@ -60,7 +60,7 @@ int main(int argc, char** argv){
   nh_private_.getParam("angular_scale", angular_scale);
   nh_private_.getParam("linear_scale", linear_scale);
 
-  double rate = 50.0;
+  double rate = 100.0;
   double x_pos = 0.0;
   double delta_x = 0.0;
   double delta_y = 0.0;

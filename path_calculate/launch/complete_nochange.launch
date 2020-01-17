@@ -1,0 +1,52 @@
+<launch>
+   <include file="$(find robot_vision)/launch/dul_gsteamer.launch"/>
+
+   <include file="$(find base_com)/launch/bringup.launch"/>
+   
+   <node pkg="vmu931" name = "vmu931" type ="vmu931_node" output="screen" >
+   <param name="/port" type="str" value="/dev/ttyACM0"/>
+   </node>
+
+   <param name="/robot1_ip" type="str" value="192.168.0.103" />
+   <param name="/robot2_ip" type="str" value="192.168.0.101" />
+   <param name="/robot3_ip" type="str" value="192.168.0.102" />
+   <param name="/robot4_ip" type="str" value="192.168.0.199" />
+   <param name="/local_ip"  type="str" value="192.168.0.102" />
+   <param name="/laptop_ip" type="str" value="192.168.0.104" />
+
+   
+   <node pkg="path_calculate" name = "udp_send" type ="udp_client" />
+   <node pkg="path_calculate" name = "udp_recv" type ="udp_server" />
+
+
+   <node pkg="rosbag" type="record" name = "record_odom" args="-o $(find path_calculate)/bags/robot3 /odom" />
+
+
+   <node pkg="path_calculate" name = "cmd_pub" type ="path_opt" output="screen" >
+   <remap from="/robot3/cmd" to="/cmd_vel"/>
+
+   <!--> Defined how many robot used in the formation and the lable number of local robot<-->
+   <param name="/total_robotn" type="int" value="4"/>
+   <param name="/this_robotn" type="int" value="3"/>
+
+   <param name="/desired_h" type="double" value="0"/>     
+   <!--> UNIT FOR heading rad, volecity m/s  
+ 	ang_lim used for nonholonmic robots system
+   <-->
+   <param name="/desired_v" type="double" value="0.20"/> 
+   <param name="/v_second" type="double" value="0.45"/> 
+   <param name="/ang_lim" type="double" value="0.2"/>        
+   <param name="/motor_lim" type="double" value="0.15"/>
+   <param name="/k_vij" type="double" value="0.15"/>
+   <param name="/k_cij" type="double" value="0.20"/>
+   <param name="/k_rotate" type="double" value="10"/>
+   <param name="/k_vjm" type="double" value="1"/>
+   <param name="/coverage" type="double" value="4"/>
+   <param name="/threshold_grd" type="double" value="0.01"/>
+   <param name="/single_test" type="bool" value="false"/>
+   </node>
+
+
+
+
+</launch>

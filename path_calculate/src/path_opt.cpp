@@ -95,6 +95,8 @@ int main(int argc, char **argv) {
 		robots.graph[2] = p4_2;	
 	}
 
+ROS_WARN("pattern position robot1x= %f, robot1y= %f", robots.graph[0].desire_x,robots.graph[0].desire_y);
+
 
  	if(robots.pc_ctrl==3 && change_v == true){
 	change_v = false;
